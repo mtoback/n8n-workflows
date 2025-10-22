@@ -1,0 +1,1172 @@
+{
+  "name": "AI Cybersecurity Blog Generator v1.0",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 📋 WORKFLOW OVERVIEW\n\n### 🎯 AI CYBERSECURITY BLOG GENERATOR - v1.0\n\n**Purpose:** Automatically generate blog posts from RSS feeds\n**Schedule:** Daily at 9:00 AM\n**Output:** Google Sheets + Gmail notification\n\n**Owner:** [Your Name/Team]\n**Last Updated:** October 21, 2025\n\n#### Quick Stats:\n- RSS Source: Bleeping Computer\n- Max articles: 3 per run\n- Estimated cost: $0.05-0.15 per run",
+        "height": 407,
+        "width": 389
+      },
+      "id": "1e8779df-108d-42a2-9ebd-f81b3e0cb7c3",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3632,
+        -768
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "id": "66ee77b4-3764-4b4e-ad3b-eb9dea7cea66",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -3296,
+        -336
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 📰 RSS FEED SOURCE\n\n**Current Feed:** Bleeping Computer\n**URL:** https://www.bleepingcomputer.com/feed/\n\n### ⚙️ Settings:\n- Fetches last 24 hours of articles\n- Retry: 3 attempts (feed might be temporarily down)\n\n### 🔄 To change feed:\nUpdate RSS Read node URL parameter\n\n📝 Other feeds available in project docs",
+        "height": 335,
+        "width": 355
+      },
+      "id": "b4fdaf1a-3754-4aa0-bcf5-f84cbe91b10b",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3328,
+        -192
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.bleepingcomputer.com/feed/",
+        "options": {}
+      },
+      "id": "11bc2818-e0c7-44e5-8ec2-3aaecf160144",
+      "name": "RSS Feed Read",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -3072,
+        -352
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetween": 60000,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "content": "## 🔍 CONTENT FILTERING\n\n**Looking for:** AI + Cybersecurity articles\n\n### Keywords (title OR description):\n- \"AI\" / \"artificial intelligence\"\n- \"machine learning\" / \"ML\"\n- \"neural network\"\n- \"deep learning\"\n- \"LLM\" / \"large language model\"\n\n### 💡 TIP:\n- Too few results? Reduce keywords\n- Too many? Add more specific terms\n\n📊 **Expected:** 1-5 matching articles per day",
+        "height": 407,
+        "width": 371
+      },
+      "id": "5e800b36-6214-4bed-8190-5eeaeeb27140",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2816,
+        -176
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## ⚠️ COST CONTROL\n\n**Current Limit:** 3 articles maximum\n\n### Why? Prevents:\n- Excessive AI API costs\n- Long execution times\n- Rate limit issues\n\n### 💰 Estimated cost per run:\n$0.05-0.15 (based on 3 articles × AI API pricing)\n\n### 🔄 To process more:\nIncrease limit in node settings",
+        "height": 340,
+        "width": 351
+      },
+      "id": "995edaf8-2580-49b1-b00c-0c1f29f017b9",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2352,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "maxItems": 3
+      },
+      "id": "0d3ffb2e-cf81-4b82-ac4d-2e49520b4147",
+      "name": "Limit Articles",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -2288,
+        -368
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 📄 ARTICLE CONTENT FETCHING\n\n### Process:\n1. HTTP Request fetches full webpage\n2. HTML Extract pulls main article text\n3. Removes ads, navigation, footers\n\n### ⚠️ Common Issues:\n- **Paywall sites:** Will get partial content\n- **Dynamic sites:** May need different extraction\n- **Rate limiting:** 30sec timeout + 3 retries\n\n### 🔧 If extraction fails:\nCheck HTML selectors",
+        "height": 383,
+        "width": 371
+      },
+      "id": "a0b91cf7-88ce-46fd-b9cf-8b7f856525ec",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2240,
+        -896
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🤖 AI BLOG POST GENERATION\n\n**Model:** OpenAI GPT-4 / Claude / etc.\n**Target Length:** 500-800 words\n\n### Prompt Strategy:\n- Analyze source article\n- Focus on AI + cybersecurity intersection\n- Include practical implications\n- Add source attribution\n\n### ⚙️ Settings:\n- **Max tokens:** 1500 (controls cost)\n- **Temperature:** 0.7 (balance creativity/accuracy)\n- **Retry:** 2 attempts\n\n💡 **To adjust tone:** Modify prompt in node settings",
+        "height": 431,
+        "width": 387
+      },
+      "id": "bb1c95ea-e803-4a71-a90e-1f6ba46b2246",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1680,
+        -960
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert cybersecurity blogger who specializes in AI applications in security.\n\nAnalyze the following article and write a comprehensive blog post (500-800 words) that:\n1. Summarizes the key points of the article\n2. Explains the implications for AI and cybersecurity\n3. Discusses practical applications or concerns\n4. Provides valuable insights for security professionals\n5. Includes a compelling title\n\nArticle Title: {{ $('RSS Feed Read').item.json.title }}\nArticle URL: {{ $('RSS Feed Read').item.json.link }}\nArticle Content: {{ $json.content }}\n\nWrite the blog post in a professional yet accessible tone. Focus on actionable insights and real-world implications.\n\nFormat your response as:\n\nTITLE: [Your catchy blog title]\n\n[Your blog post content]\n\nSOURCE: {{ $('RSS Feed Read').item.json.title }} - {{ $('RSS Feed Read').item.json.link }}",
+        "options": {}
+      },
+      "id": "b677f7b8-40a1-452a-af74-f8b9ee6d60cd",
+      "name": "Generate Blog Post",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -1664,
+        -464
+      ],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetween": 60000,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Format the blog post for Google Sheets\nconst now = new Date();\nconst dateStr = now.toISOString().split('T')[0];\n\n// Extract the generated blog post\nconst blogPost = $input.item.json.output || \"Generation failed\";\n\n// Get original article info\nconst sourceTitle = $('RSS Feed Read').item.json.title || \"Unknown\";\nconst sourceUrl =  $('RSS Feed Read').item.json.link  || \"Unknown\";\n\n// Determine status\nconst status = blogPost.includes(\"Generation failed\") ? \"Failed\" : \"Success\";\nconst errorMsg = status === \"Failed\" ? \"AI generation error\" : \"\";\n\nreturn {\n  date: dateStr,\n  sourceTitle: sourceTitle,\n  sourceUrl: sourceUrl,\n  blogPost: blogPost,\n  status: status,\n  errorMessage: errorMsg\n};"
+      },
+      "id": "c1d1e864-cdbb-44b5-a677-88c03fd26b1d",
+      "name": "Format Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1360,
+        -464
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 💾 GOOGLE SHEETS OUTPUT\n\n**Sheet Name:** \"AI Security Blogs\"\n**Sheet ID:** [paste actual ID here]\n\n### Columns:\n- **A:** Date (auto-generated)\n- **B:** Source Article Title\n- **C:** Source URL\n- **D:** Generated Blog Post\n- **E:** Status (Success/Failed)\n- **F:** Error Message (if any)\n\n🔑 **Permissions:** Ensure n8n has edit access\n📊 **View sheet:** [paste Google Sheets URL here]",
+        "height": 407,
+        "width": 387
+      },
+      "id": "d3ad78bb-8e7d-41ec-91b7-ec7e5241cd8e",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1200,
+        -304
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1_s2TW49QNnUQ_fUkQVWoDDb-7uwylV8ih-nWOqKoOZU",
+          "mode": "list",
+          "cachedResultName": "RSS Blogs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_s2TW49QNnUQ_fUkQVWoDDb-7uwylV8ih-nWOqKoOZU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_s2TW49QNnUQ_fUkQVWoDDb-7uwylV8ih-nWOqKoOZU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $json.date }}",
+            "sourceTitle": "={{ $json.sourceTitle }}",
+            "sourceURL": "={{ $json.sourceUrl }}",
+            "blogPost": "={{ $json.blogPost }}",
+            "status": "={{ $json.status }}"
+          },
+          "matchingColumns": [
+            "sourceTitle"
+          ],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "sourceTitle",
+              "displayName": "sourceTitle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "sourceURL",
+              "displayName": "sourceURL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "blogPost",
+              "displayName": "blogPost",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "2127f862-8838-4fc5-a81f-269bb889c9d4",
+      "name": "Save to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [
+        -1184,
+        -464
+      ],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetween": 10000,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rWVjFuvPptskvkoq",
+          "name": "Google Sheets account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Aggregate results for email notification\nconst items = $input.all();\nconst successCount = items.filter(item => item.json.status === \"Success\").length;\nconst failCount = items.filter(item => item.json.status === \"Failed\").length;\nconst totalCount = items.length;\n\nreturn {\n  successCount: successCount,\n  failCount: failCount,\n  totalCount: totalCount,\n  overallStatus: failCount === 0 ? \"success\" : \"partial_failure\",\n  timestamp: new Date().toISOString()\n};"
+      },
+      "id": "3c63a717-acd1-432a-9a32-fdc1a66f6589",
+      "name": "Aggregate Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -976,
+        -464
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "success-condition",
+              "leftValue": "={{ $json.successCount }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "8701dfe3-d3a1-4489-a277-1bbe616e43d7",
+      "name": "Check Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -752,
+        -464
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 📧 SUCCESS EMAIL\n\n**Recipient:** [your-email@domain.com]\n\n### ✅ Sent when:\nBlog posts generated successfully\n\n### Contains:\n- Number of articles processed\n- Link to Google Sheets\n- Brief summary\n\n🔇 **To reduce noise:** Update recipient or add filters",
+        "height": 335,
+        "width": 347
+      },
+      "id": "f9d44fa5-8764-4e36-b504-c38b09d90448",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -688,
+        -944
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "michael.toback@gmail.com",
+        "subject": "✅ Daily AI Security Blog Generated",
+        "message": "=✅ SUCCESS: AI Security Blog Posts Generated\n\n📊 Summary:\n- Total articles processed: {{ $json.totalCount }}\n- Successful generations: {{ $json.successCount }}\n- Failed generations: {{ $json.failCount }}\n\n📅 Date: {{ $json.timestamp }}\n\n📝 View your generated blog posts:\n[Link to your Google Sheets]\n\n---\nAI Cybersecurity Blog Generator v1.0\nAutomated via n8n",
+        "options": {}
+      },
+      "id": "004d3bf3-4ba8-4fa3-9c2f-6b08d52eccf7",
+      "name": "Send Success Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -528,
+        -576
+      ],
+      "webhookId": "12ee7a3b-58cf-4b62-88c1-f0e620cb04b8",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "oMCmt67qKxQs8UEM",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 📧 FAILURE EMAIL\n\n**Recipient:** [your-email@domain.com]\n\n### ❌ Sent when:\nWorkflow encounters errors\n\n### Contains:\n- Error details\n- Which step failed\n- Troubleshooting suggestions\n\n🔔 **This helps you fix issues quickly**",
+        "height": 311,
+        "width": 347
+      },
+      "id": "725975e5-41f3-4133-bdd6-5c185d988f2a",
+      "name": "Sticky Note8",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        -112
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "michael.toback@gmail.com",
+        "subject": "❌ Daily AI Security Blog Failed",
+        "message": "=❌ ERROR: AI Security Blog Generation Failed\n\n📊 Summary:\n- Total articles attempted: {{ $json.totalCount }}\n- Successful generations: {{ $json.successCount }}\n- Failed generations: {{ $json.failCount }}\n\n⚠️ All generations failed. Please check:\n- RSS feed availability\n- AI API credentials and rate limits\n- Google Sheets permissions\n- Network connectivity\n\n🔧 View execution logs in n8n for detailed error information.\n\n📅 Timestamp: {{ $json.timestamp }}\n\n---\nAI Cybersecurity Blog Generator v1.0",
+        "options": {}
+      },
+      "id": "64e60637-28f0-4bff-978b-e3318ce53bfc",
+      "name": "Send Failure Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -528,
+        -336
+      ],
+      "webhookId": "78f978ef-e190-40ef-be1d-3b416686621d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "oMCmt67qKxQs8UEM",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 🔧 TROUBLESHOOTING GUIDE\n\n### Problem: No articles generated\n→ Check if RSS feed is down\n→ Relax filter keywords\n→ Check execution log for errors\n\n### Problem: Poor quality blog posts\n→ Adjust AI prompt in Agent node\n→ Increase max tokens\n→ Try different AI model\n\n### Problem: Workflow not running\n→ Verify schedule trigger is active\n→ Check workflow activation toggle (top right)\n\n### Problem: Google Sheets not updating\n→ Verify credentials are still valid\n→ Check sheet permissions\n\n📚 **Need help?** Check n8n docs or contact support",
+        "height": 527,
+        "width": 419
+      },
+      "id": "6ea3879e-a0ad-4415-862d-89423489320c",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3392,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## ⚠️ ERROR HANDLING STRATEGY\n\n### All critical nodes set to:\n- **Continue On Fail** = true\n- Retries configured appropriately\n\n### Error Paths:\n❌ RSS Feed fails → Error email sent\n❌ No articles match → Info email (not error)\n❌ HTTP fetch fails → Logged to sheet + email\n❌ AI generation fails → Logged + email\n\n### Retry Strategy:\n- **Network calls:** 3 retries, 30-60sec wait\n- **API calls:** 2 retries, 60sec wait\n- **Google Sheets:** 2 retries, 10sec wait\n\n**This ensures you're always notified!**",
+        "height": 479,
+        "width": 419
+      },
+      "id": "eade9e2b-cbbd-4a49-a0e5-23975b8120df",
+      "name": "Sticky Note10",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2768,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 🧪 MANUAL TESTING\n\n**Click \"Test Workflow\" button to test without waiting for schedule**\n\n### Testing Checklist:\n□ RSS feed returns articles\n□ Filter finds relevant content\n□ Articles are fetched successfully\n□ AI generates readable blog posts\n□ Google Sheets updates correctly\n□ Gmail notification sent\n\n💡 **Always test in \"Test Workflow\" mode first!**\n\n### 🔄 After testing successfully:\n1. Click \"Save\" button\n2. Toggle \"Active\" switch to enable schedule",
+        "height": 455,
+        "width": 419
+      },
+      "id": "01e7aff3-1df2-4f75-8920-1403aa75d523",
+      "name": "Sticky Note11",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2128,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 📌 QUICK REFERENCE\n\n### 🔧 Configuration:\n- **RSS:** Bleeping Computer\n- **Schedule:** Daily 9AM\n- **Limit:** 3 articles max\n- **Email:** [your@email.com]\n- **Cost/run:** ~$0.10\n\n### 🔗 Important Links:\n- **Google Sheet:** [paste URL]\n- **RSS Feed:** bleepingcomputer.com/feed\n- **n8n Docs:** docs.n8n.io\n\n📝 **Last Updated:** Oct 21, 2025\n👤 **Owner:** [Your Name]",
+        "height": 407,
+        "width": 371
+      },
+      "id": "186fdc87-0ced-4f3c-8955-97dc9801fad9",
+      "name": "Sticky Note12",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1488,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "model": "deepseek/deepseek-r1-0528",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -1664,
+        -256
+      ],
+      "id": "ff3aa158-ada4-41b6-9967-6f96a3c3173b",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "swZU820dMjD9C5Tj",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Classify if this article is about BOTH AI and cybersecurity.\nCRITERIA:\n- Must involve AI/ML tools, systems, or models\n- Must relate to security, attacks, or defenses\n- AI can be the subject (AI tool vulnerabilities) OR method (AI for attack/defense)\nRESPOND with either: \n{\"relevant\": true} or {\"relevant\": false}\nEXAMPLES:\nTitle: \"SharePoint ToolShell attacks target organizations\"\n{\"relevant\": false}\nReason: SharePoint isn't an AI tool\n\nTitle: \"Cursor, Windsurf IDEs have 94+ Chromium vulnerabilities\"\n{\"relevant\": true}\nReason: Cursor/Windsurf are AI code editors with security flaws\n\nTitle: \"AI model detects zero-day exploits with 95% accuracy\"\n{\"relevant\": true}\nReason: AI used for security defense\n\nTitle: \"Hackers breach networks using phishing emails\"\n{\"relevant\": false}\nReason: No AI involvement\n\nTitle: \"ChatGPT jailbreak bypasses content filters\"\n{\"relevant\": true}\nReason: AI system security vulnerability\n\njust output the result of the analysis as {\"relevant\": ...}\nNOW CLASSIFY: \nTitle: {{ $json.title }}\nDescription: {{ $json.contentSnippet }}\"\n      ",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -2880,
+        -336
+      ],
+      "id": "a6a61e7b-d627-46ab-aeeb-8f64a5be4e5e",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "deepseek/deepseek-r1-0528",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -2912,
+        -128
+      ],
+      "id": "661d666c-40ef-4a70-affb-7079c868d07d",
+      "name": "OpenRouter Chat Model1",
+      "credentials": {
+        "openRouterApi": {
+          "id": "swZU820dMjD9C5Tj",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\"output\": [{\n\"title\": \"...\",\n\"pubDate\": \"...\",\n\"contentSnippet\": \"...\",\n\"relevant\": \"...\"\n}]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -2608,
+        -128
+      ],
+      "id": "032379d5-e44e-4e5b-9974-5d7fd1eccc9f",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "12205c52-5047-4dfc-a399-f6bb3c9658c4",
+              "leftValue": "={{ $json.output.relevant }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -2544,
+        -336
+      ],
+      "id": "c15a7ada-1d11-4a56-abb8-ca23eb889c4a",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\"relevant\": false}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -2720,
+        -128
+      ],
+      "id": "8b39885e-aff5-48bd-99f6-ae26380054ab",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('RSS Feed Read').item.json.link }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "50e83fa0-20f6-4bd8-91f2-1094703313b6",
+      "name": "Fetch Article Content",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2064,
+        -384
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetween": 30000,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the HTML content from the HTTP request\nconst html = $input.item.json.data || $input.item.json.body || '';\n\n// Basic HTML tag stripping\nfunction stripHtml(html) {\n  // Remove script and style elements\n  let text = html.replace(/<script[^>]*>[\\s\\S]*?<\\/script>/gi, '');\n  text = text.replace(/<style[^>]*>[\\s\\S]*?<\\/style>/gi, '');\n  \n  // Remove HTML tags\n  text = text.replace(/<[^>]+>/g, ' ');\n  \n  // Decode common HTML entities\n  text = text.replace(/&nbsp;/g, ' ')\n             .replace(/&amp;/g, '&')\n             .replace(/&lt;/g, '<')\n             .replace(/&gt;/g, '>')\n             .replace(/&quot;/g, '\"')\n             .replace(/&#39;/g, \"'\")\n             .replace(/&apos;/g, \"'\");\n  \n  // Clean up whitespace\n  text = text.replace(/\\s+/g, ' ').trim();\n  \n  return text;\n}\n\n// Extract clean text\nconst cleanText = stripHtml(html);\n\n// Return formatted output\nreturn {\n  content: cleanText,\n  title: $input.item.json.title,\n  link: $input.item.json.link,\n  contentLength: cleanText.length\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1904,
+        -464
+      ],
+      "id": "83a769a7-91ee-48fa-a319-ab3f762fbc15",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {
+    "RSS Feed Read": [
+      {
+        "json": {
+          "creator": "Bill Toulas",
+          "title": "Sharepoint ToolShell attacks targeted orgs across four continents",
+          "link": "https://www.bleepingcomputer.com/news/security/sharepoint-toolshell-attacks-targeted-orgs-across-four-continents/",
+          "pubDate": "Wed, 22 Oct 2025 06:24:29 -0400",
+          "dc:creator": "Bill Toulas",
+          "content": "Hackers believed to be associated with China have leveraged the ToolShell vulnerability (CVE-2025-53770) in Microsoft SharePoint in attacks targeting government agencies, universities, telecommunication service providers, and finance organizations. [...]",
+          "contentSnippet": "Hackers believed to be associated with China have leveraged the ToolShell vulnerability (CVE-2025-53770) in Microsoft SharePoint in attacks targeting government agencies, universities, telecommunication service providers, and finance organizations. [...]",
+          "guid": "https://www.bleepingcomputer.com/news/security/sharepoint-toolshell-attacks-targeted-orgs-across-four-continents/",
+          "categories": [
+            "Security"
+          ],
+          "isoDate": "2025-10-22T10:24:29.000Z"
+        }
+      },
+      {
+        "json": {
+          "creator": "Bill Toulas",
+          "title": "Vidar Stealer 2.0 adds multi-threaded data theft, better evasion",
+          "link": "https://www.bleepingcomputer.com/news/security/vidar-stealer-20-adds-multi-threaded-data-theft-better-evasion/",
+          "pubDate": "Tue, 21 Oct 2025 18:26:02 -0400",
+          "dc:creator": "Bill Toulas",
+          "content": "The operators of Vidar Stealer, one of the most successful malware-as-a-service (MaaS) operations of the past decade, have released a new major version to reflect massive improvements in the malware. [...]",
+          "contentSnippet": "The operators of Vidar Stealer, one of the most successful malware-as-a-service (MaaS) operations of the past decade, have released a new major version to reflect massive improvements in the malware. [...]",
+          "guid": "https://www.bleepingcomputer.com/news/security/vidar-stealer-20-adds-multi-threaded-data-theft-better-evasion/",
+          "categories": [
+            "Security"
+          ],
+          "isoDate": "2025-10-21T22:26:02.000Z"
+        }
+      },
+      {
+        "json": {
+          "creator": "Bill Toulas",
+          "title": "TP-Link warns of critical command injection flaw in Omada gateways",
+          "link": "https://www.bleepingcomputer.com/news/security/tp-link-warns-of-critical-command-injection-flaw-in-omada-gateways/",
+          "pubDate": "Tue, 21 Oct 2025 17:11:35 -0400",
+          "dc:creator": "Bill Toulas",
+          "content": "TP-Link has made firmware updates available for a broad range of Omada gateway models to address four vulnerabilities, among which a critical pre-auth OS command injection. [...]",
+          "contentSnippet": "TP-Link has made firmware updates available for a broad range of Omada gateway models to address four vulnerabilities, among which a critical pre-auth OS command injection. [...]",
+          "guid": "https://www.bleepingcomputer.com/news/security/tp-link-warns-of-critical-command-injection-flaw-in-omada-gateways/",
+          "categories": [
+            "Security"
+          ],
+          "isoDate": "2025-10-21T21:11:35.000Z"
+        }
+      },
+      {
+        "json": {
+          "creator": "Lawrence Abrams",
+          "title": "CISA confirms hackers exploited Oracle E-Business Suite SSRF flaw",
+          "link": "https://www.bleepingcomputer.com/news/security/cisa-confirms-hackers-exploited-oracle-e-business-suite-ssrf-flaw/",
+          "pubDate": "Tue, 21 Oct 2025 15:15:34 -0400",
+          "dc:creator": "Lawrence Abrams",
+          "content": "CISA has confirmed that an Oracle E-Business Suite flaw tracked as CVE-2025-61884 is being exploited in attacks, adding it to its Known Exploited Vulnerabilities catalog. [...]",
+          "contentSnippet": "CISA has confirmed that an Oracle E-Business Suite flaw tracked as CVE-2025-61884 is being exploited in attacks, adding it to its Known Exploited Vulnerabilities catalog. [...]",
+          "guid": "https://www.bleepingcomputer.com/news/security/cisa-confirms-hackers-exploited-oracle-e-business-suite-ssrf-flaw/",
+          "categories": [
+            "Security"
+          ],
+          "isoDate": "2025-10-21T19:15:34.000Z"
+        }
+      },
+      {
+        "json": {
+          "creator": "Bill Toulas",
+          "title": "Cursor, Windsurf IDEs riddled with 94+ n-day Chromium vulnerabilities",
+          "link": "https://www.bleepingcomputer.com/news/security/cursor-windsurf-ides-riddled-with-94-plus-n-day-chromium-vulnerabilities/",
+          "pubDate": "Tue, 21 Oct 2025 15:00:00 -0400",
+          "dc:creator": "Bill Toulas",
+          "content": "The latest releases of Cursor and Windsurf integrated development environments are vulnerable to more than 94 known and patched security issues in the Chromium browser and the V8 JavaScript engine. [...]",
+          "contentSnippet": "The latest releases of Cursor and Windsurf integrated development environments are vulnerable to more than 94 known and patched security issues in the Chromium browser and the V8 JavaScript engine. [...]",
+          "guid": "https://www.bleepingcomputer.com/news/security/cursor-windsurf-ides-riddled-with-94-plus-n-day-chromium-vulnerabilities/",
+          "categories": [
+            "Security",
+            "Artificial Intelligence"
+          ],
+          "isoDate": "2025-10-21T19:00:00.000Z"
+        }
+      },
+      {
+        "json": {
+          "creator": "Sergiu Gatlan",
+          "title": "Hackers exploit 34 zero-days on first day of Pwn2Own Ireland",
+          "link": "https://www.bleepingcomputer.com/news/security/hackers-exploit-34-zero-days-on-first-day-of-pwn2own-ireland/",
+          "pubDate": "Tue, 21 Oct 2025 13:39:40 -0400",
+          "dc:creator": "Sergiu Gatlan",
+          "content": "On the first day of Pwn2Own Ireland 2025, security researchers exploited 34 unique zero-days and collected $522,500 in cash awards. [...]",
+          "contentSnippet": "On the first day of Pwn2Own Ireland 2025, security researchers exploited 34 unique zero-days and collected $522,500 in cash awards. [...]",
+          "guid": "https://www.bleepingcomputer.com/news/security/hackers-exploit-34-zero-days-on-first-day-of-pwn2own-ireland/",
+          "categories": [
+            "Security"
+          ],
+          "isoDate": "2025-10-21T17:39:40.000Z"
+        }
+      },
+      {
+        "json": {
+          "creator": "Sergiu Gatlan",
+          "title": "Microsoft: Recent Windows updates cause login issues on some PCs",
+          "link": "https://www.bleepingcomputer.com/news/microsoft/microsoft-recent-windows-updates-cause-login-issues-on-pcs-sharing-security-ids/",
+          "pubDate": "Tue, 21 Oct 2025 12:56:36 -0400",
+          "dc:creator": "Sergiu Gatlan",
+          "content": "Microsoft has confirmed that Windows updates released since August 29, 2025, are breaking authentication on systems sharing Security Identifiers. [...]",
+          "contentSnippet": "Microsoft has confirmed that Windows updates released since August 29, 2025, are breaking authentication on systems sharing Security Identifiers. [...]",
+          "guid": "https://www.bleepingcomputer.com/news/microsoft/microsoft-recent-windows-updates-cause-login-issues-on-pcs-sharing-security-ids/",
+          "categories": [
+            "Microsoft"
+          ],
+          "isoDate": "2025-10-21T16:56:36.000Z"
+        }
+      },
+      {
+        "json": {
+          "creator": "Bill Toulas",
+          "title": "Russian hackers evolve malware pushed in \"I am not a robot\" captchas",
+          "link": "https://www.bleepingcomputer.com/news/security/russian-hackers-evolve-malware-pushed-in-i-am-not-a-robot-clickfix-attacks/",
+          "pubDate": "Tue, 21 Oct 2025 11:13:19 -0400",
+          "dc:creator": "Bill Toulas",
+          "content": "The Russian state-backed Star Blizzard hacker group has ramped up operations with new, constantly evolving malware families (NoRobot, MaybeRobot) deployed in complex delivery chains that start with ClickFix social engineering attacks. [...]",
+          "contentSnippet": "The Russian state-backed Star Blizzard hacker group has ramped up operations with new, constantly evolving malware families (NoRobot, MaybeRobot) deployed in complex delivery chains that start with ClickFix social engineering attacks. [...]",
+          "guid": "https://www.bleepingcomputer.com/news/security/russian-hackers-evolve-malware-pushed-in-i-am-not-a-robot-clickfix-attacks/",
+          "categories": [
+            "Security"
+          ],
+          "isoDate": "2025-10-21T15:13:19.000Z"
+        }
+      },
+      {
+        "json": {
+          "creator": "Sponsored by NordLayer",
+          "title": "Maximizing gateway security: Beyond the basic configuration",
+          "link": "https://www.bleepingcomputer.com/news/security/maximizing-gateway-security-beyond-the-basic-configuration/",
+          "pubDate": "Tue, 21 Oct 2025 10:01:11 -0400",
+          "dc:creator": "Sponsored by NordLayer",
+          "content": "Gateways can do more than route traffic, they can also strengthen your entire security posture. Learn how NordLayer combines ZTNA, firewalls, and private gateways to secure hybrid teams and keep networks compliant. [...]",
+          "contentSnippet": "Gateways can do more than route traffic, they can also strengthen your entire security posture. Learn how NordLayer combines ZTNA, firewalls, and private gateways to secure hybrid teams and keep networks compliant. [...]",
+          "guid": "https://www.bleepingcomputer.com/news/security/maximizing-gateway-security-beyond-the-basic-configuration/",
+          "categories": [
+            "Security"
+          ],
+          "isoDate": "2025-10-21T14:01:11.000Z"
+        }
+      },
+      {
+        "json": {
+          "creator": "Sergiu Gatlan",
+          "title": "Microsoft fixes bug preventing users from opening classic Outlook",
+          "link": "https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-bug-preventing-users-from-opening-classic-outlook/",
+          "pubDate": "Tue, 21 Oct 2025 08:59:48 -0400",
+          "dc:creator": "Sergiu Gatlan",
+          "content": "Microsoft has fixed a major bug preventing Microsoft 365 users from launching the classic Outlook email client on Windows systems. [...]",
+          "contentSnippet": "Microsoft has fixed a major bug preventing Microsoft 365 users from launching the classic Outlook email client on Windows systems. [...]",
+          "guid": "https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-bug-preventing-users-from-opening-classic-outlook/",
+          "categories": [
+            "Microsoft"
+          ],
+          "isoDate": "2025-10-21T12:59:48.000Z"
+        }
+      },
+      {
+        "json": {
+          "creator": "Sergiu Gatlan",
+          "title": "Windows 11 KB5070773 emergency update fixes Windows Recovery issues",
+          "link": "https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-usb-issue-that-made-windows-recovery-unusable/",
+          "pubDate": "Tue, 21 Oct 2025 05:01:44 -0400",
+          "dc:creator": "Sergiu Gatlan",
+          "content": "Microsoft has released an emergency update to fix the Windows Recovery Environment (WinRE), which became unusable on systems with USB mice and keyboards after installing the October 2025 security updates. [...]",
+          "contentSnippet": "Microsoft has released an emergency update to fix the Windows Recovery Environment (WinRE), which became unusable on systems with USB mice and keyboards after installing the October 2025 security updates. [...]",
+          "guid": "https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-usb-issue-that-made-windows-recovery-unusable/",
+          "categories": [
+            "Microsoft"
+          ],
+          "isoDate": "2025-10-21T09:01:44.000Z"
+        }
+      },
+      {
+        "json": {
+          "creator": "Bill Toulas",
+          "title": "DNS0.EU private DNS service shuts down over sustainability issues",
+          "link": "https://www.bleepingcomputer.com/news/security/dns0eu-private-dns-service-shuts-down-over-sustainability-issues/",
+          "pubDate": "Mon, 20 Oct 2025 17:05:17 -0400",
+          "dc:creator": "Bill Toulas",
+          "content": "The DNS0.EU non-profit public DNS service focused on European users announced its immediate shut down due to time and resource constraints. [...]",
+          "contentSnippet": "The DNS0.EU non-profit public DNS service focused on European users announced its immediate shut down due to time and resource constraints. [...]",
+          "guid": "https://www.bleepingcomputer.com/news/security/dns0eu-private-dns-service-shuts-down-over-sustainability-issues/",
+          "categories": [
+            "Security",
+            "Technology"
+          ],
+          "isoDate": "2025-10-20T21:05:17.000Z"
+        }
+      },
+      {
+        "json": {
+          "creator": "Sergiu Gatlan",
+          "title": "Microsoft: October updates break USB input in Windows Recovery",
+          "link": "https://www.bleepingcomputer.com/news/microsoft/microsoft-october-updates-break-usb-mice-and-keyboards-in-windows-recovery/",
+          "pubDate": "Mon, 20 Oct 2025 15:06:40 -0400",
+          "dc:creator": "Sergiu Gatlan",
+          "content": "Microsoft has confirmed that this month's security updates disable USB mice and keyboards in the Windows Recovery Environment (WinRE), making it unusable. [...]",
+          "contentSnippet": "Microsoft has confirmed that this month's security updates disable USB mice and keyboards in the Windows Recovery Environment (WinRE), making it unusable. [...]",
+          "guid": "https://www.bleepingcomputer.com/news/microsoft/microsoft-october-updates-break-usb-mice-and-keyboards-in-windows-recovery/",
+          "categories": [
+            "Microsoft"
+          ],
+          "isoDate": "2025-10-20T19:06:40.000Z"
+        }
+      }
+    ],
+    "AI Agent": [
+      {
+        "json": {
+          "output": {
+            "relevant": false
+          }
+        }
+      },
+      {
+        "json": {
+          "output": {
+            "relevant": false
+          }
+        }
+      },
+      {
+        "json": {
+          "output": {
+            "relevant": false
+          }
+        }
+      },
+      {
+        "json": {
+          "output": {
+            "relevant": false
+          }
+        }
+      },
+      {
+        "json": {
+          "output": {
+            "relevant": true
+          }
+        }
+      },
+      {
+        "json": {
+          "output": {
+            "relevant": false
+          }
+        }
+      },
+      {
+        "json": {
+          "output": {
+            "relevant": false
+          }
+        }
+      },
+      {
+        "json": {
+          "output": {
+            "relevant": false
+          }
+        }
+      },
+      {
+        "json": {
+          "output": {
+            "relevant": false
+          }
+        }
+      },
+      {
+        "json": {
+          "output": {
+            "relevant": false
+          }
+        }
+      },
+      {
+        "json": {
+          "output": {
+            "relevant": false
+          }
+        }
+      },
+      {
+        "json": {
+          "output": {
+            "relevant": false
+          }
+        }
+      },
+      {
+        "json": {
+          "output": {
+            "relevant": false
+          }
+        }
+      }
+    ],
+    "Limit Articles": [
+      {
+        "json": {
+          "output": {
+            "relevant": true
+          }
+        }
+      }
+    ],
+    "Fetch Article Content": [
+      {
+        "json": {
+          "data": "<!doctype html>\n<html lang=\"en-us\">\n<head>\n\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n\n\n<!-- Fonts -->\n<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900&display=swap' rel='stylesheet preload' type='text/css' as=\"style\">\n\n<!-- Style sheet -->\n<link href=\"https://www.bleepstatic.com/js/redesign/bootstrap/css/bootstrap.min.css\" rel=\"stylesheet preload\" type=\"text/css\" media=\"all\" as=\"style\">\n\n<link href=\"https://www.bleepstatic.com/css/redesign/main.css?v=09.22.24.2\" rel=\"stylesheet preload\" type=\"text/css\" media=\"all\" as=\"style\">\n<link href=\"https://www.bleepstatic.com/css/redesign/home.css\" rel=\"stylesheet preload\" type=\"text/css\" media=\"screen\" as=\"style\">\n<link href=\"https://www.bleepstatic.com/css/redesign/news.css\" rel=\"stylesheet preload\" type=\"text/css\" as=\"style\" media=\"screen,print\">\n<link rel=\"preload\" href=\"https://www.bleepstatic.com/js/redesign/jquery-3.5.1.min.js\" as=\"script\">\n\n<link rel=\"preload\" href=\"https://www.bleepstatic.com/js/redesign/jquery-migrate-1.4.1.min.js\" as=\"script\">\n\n<!-- Meta -->\n<meta name=\"Owner\" content=\"Lawrence Abrams/BleepingComputer.com\" />\n<link rel=\"shortcut icon\" href=\"https://www.bleepstatic.com/favicon/bleeping.ico\" />\n<meta property=\"og:site_name\" content=\"BleepingComputer\" />\n<meta property=\"og:locale\" content=\"en_us\" />\n<meta name=\"application-name\" content=\"BleepingComputer\"/>\n<link rel='dns-prefetch' href='//fonts.googleapis.com'/>\n<link rel='dns-prefetch' href='//www.bleepstatic.com'/>\n<link rel='dns-prefetch' href='//www.google-analytics.com'/>\n<link rel='dns-prefetch' href='//www.googletagmanager.com'/>\n<link rel='dns-prefetch' href='//securepubads.g.doubleclick.net' />\n\n<title>Cursor, Windsurf IDEs riddled with 94+ n-day Chromium vulnerabilities</title>\n\t<meta name=\"Keywords\" content=\"computers, windows, linux, mac, support, tech support, spyware, malware, virus, security, AI, Chromium, Coding, Google Chrome, IDE, LLM, N-day, Vulnerability,virus removal, malware removal, computer help, technical support\" />\n\t<meta name=\"description\" content=\"The latest releases of Cursor and Windsurf integrated development environments are vulnerable to more than 94 known and patched security issues in the Chromium browser and the V8 JavaScript engine.\" />\n\t\t<meta name=\"abstract\" content=\"The latest releases of Cursor and Windsurf integrated development environments are vulnerable to more than 94 known and patched security issues in the Chromium browser and the V8 JavaScript engine.\" />\n<link rel=\"canonical\" href=\"https://www.bleepingcomputer.com/news/security/cursor-windsurf-ides-riddled-with-94-plus-n-day-chromium-vulnerabilities/\" />\n<link rel=\"prev\" href=\"https://www.bleepingcomputer.com/offer/deals/unlimited-sites-with-ionos-web-hosting-plus-3-years-for-9999/\" />\n<link rel=\"next\" href=\"https://www.bleepingcomputer.com/news/security/cisa-confirms-hackers-exploited-oracle-e-business-suite-ssrf-flaw/\" />\n<meta name=\"news_keywords\" content=\"AI, Chromium, Coding, Google Chrome, IDE, LLM, N-day, Vulnerability, Security, InfoSec, Computer Security\">\n\n<meta property=\"og:url\" content=\"https://www.bleepingcomputer.com/news/security/cursor-windsurf-ides-riddled-with-94-plus-n-day-chromium-vulnerabilities/\" />\n<meta property=\"og:type\" content=\"article\" />\n<meta property=\"og:title\" content=\"Cursor, Windsurf IDEs riddled with 94+ n-day Chromium vulnerabilities\" />\n<meta property=\"og:description\" content=\"The latest releases of&nbsp;Cursor and Windsurf integrated development environments&nbsp;are vulnerable to more than 94 known and patched security issues in the Chromium browser and the V8 JavaScript engine.\" />\n<meta property=\"og:image\" content=\"https://www.bleepstatic.com/content/hl-images/2025/01/31/Chromium-headpic.jpg\" />\n<meta property=\"og:image:secure_url\" content=\"https://www.bleepstatic.com/content/hl-images/2025/01/31/Chromium-headpic.jpg\" />\n<meta property=\"fb:app_id\" content=\"517620508265293\" />\n\n<meta property=\"og:image:width\" content=\"1600\" /> \n<meta property=\"og:image:height\" content=\"900\" />\n\n<meta name=\"twitter:card\" content=\"summary_large_image\" />\n<meta name=\"twitter:site\" content=\"@BleepinComputer\" />\n<meta name=\"twitter:creator\" content=\"@BleepinComputer\" />\n<meta name=\"twitter:title\" content=\"Cursor, Windsurf IDEs riddled with 94+ n-day Chromium vulnerabilities\" />\n<meta name=\"twitter:description\" content=\"The latest releases of&nbsp;Cursor and Windsurf integrated development environments&nbsp;are vulnerable to more than 94 known and patched security issues in the Chromium browser and the V8 JavaScript engine.\" />\n<meta name=\"twitter:image\" content=\"https://www.bleepstatic.com/content/hl-images/2025/01/31/Chromium-headpic.jpg\" />\n\t\t\n<script type=\"application/ld+json\">\n{\n    \"@context\": \"https://schema.org\",\n    \"@type\": \"NewsArticle\",\n    \"url\": \"https://www.bleepingcomputer.com/news/security/cursor-windsurf-ides-riddled-with-94-plus-n-day-chromium-vulnerabilities/\",\n    \"headline\": \"Cursor, Windsurf IDEs riddled with 94+ n-day Chromium vulnerabilities\",\n    \"name\": \"Cursor, Windsurf IDEs riddled with 94+ n-day Chromium vulnerabilities\",\n    \"mainEntityOfPage\": {\n        \"@type\": \"WebPage\",\n        \"id\": \"https://www.bleepingcomputer.com/news/security/cursor-windsurf-ides-riddled-with-94-plus-n-day-chromium-vulnerabilities/\"\n    },\n    \"description\": \"The latest releases of&nbsp;Cursor and Windsurf integrated development environments&nbsp;are vulnerable to more than 94 known and patched security issues in the Chromium browser and the V8 JavaScript engine.\",\n    \"image\": {\n        \"@type\": \"ImageObject\",\n        \"digitalSourceType\": \"trainedAlgorithmicMedia\",\n        \"url\": \"https://www.bleepstatic.com/content/hl-images/2025/01/31/Chromium-headpic.jpg\",\n        \"width\": 1600,\n        \"height\": 900\n    },\n    \"author\": {\n        \"@type\": \"Person\",\n        \"name\": \"Bill Toulas\",\n        \"url\": \"https://www.bleepingcomputer.com/author/bill-toulas/\"\n    },\n    \"keywords\": [\"AI\",\"Chromium\",\"Coding\",\"Google Chrome\",\"IDE\",\"LLM\",\"N-day\",\"Vulnerability\",\"Security\",\"InfoSec, Computer Security\"],\n    \"datePublished\": \"2025-10-21T15:00:00-04:00\",\n    \"dateModified\": \"2025-10-21T14:45:52-04:00\",\n    \"publisher\": {\n        \"@type\": \"Organization\",\n        \"name\": \"BleepingComputer\",\n        \"url\": \"https://www.bleepingcomputer.com/\",\n        \"logo\": {\n            \"@type\": \"ImageObject\",\n            \"url\": \"https://www.bleepstatic.com/logos/bleepingcomputer-logo.png\",\n            \"width\": 700,\n            \"height\": 700\n        }\n    }\n}\n</script>\n<link rel=\"amphtml\" href=\"https://www.bleepingcomputer.com/news/security/cursor-windsurf-ides-riddled-with-94-plus-n-day-chromium-vulnerabilities/amp/\">\n\n<LINK REL=\"alternate\" TITLE=\"Bleeping Computer's News\" HREF=\"https://www.bleepingcomputer.com/feed/\" TYPE=\"application/rss+xml\">\n\n<script type=\"text/javascript\" src=\"https://www.bleepstatic.com/js/redesign/jquery-3.5.1.min.js\"></script>\n<script type=\"text/javascript\" src=\"https://www.bleepstatic.com/js/redesign/jquery-migrate-1.4.1.min.js\"></script>\n\n<script async type=\"text/javascript\" src=\"https://www.bleepstatic.com/js/redesign/news.js\"></script>\n<script>!function(n){if(!window.cnx){window.cnx={},window.cnx.cmd=[];var t=n.createElement('iframe');t.src='javascript:false'; t.display='none',t.onload=function(){var n=t.contentWindow.document,c=n.createElement('script');c.src='//cd.connatix.com/connatix.player.js?cid=f9509d53-804e-427d-a0bc-1204c0a3bcb1&pid=ce4d4c45-53cb-40cc-88d1-30d789f5b276',c.setAttribute('async','1'),c.setAttribute('type','text/javascript'),n.body.appendChild(c)},n.head.appendChild(t)}}(document);</script>\n\n<script id=\"9b67500bc68b4bf2997a1e7f878fb25e\">(new Image()).src = 'https://capi.connatix.com/tr/si?token=ce4d4c45-53cb-40cc-88d1-30d789f5b276&cid=f9509d53-804e-427d-a0bc-1204c0a3bcb1'; cnx.cmd.push(function() { cnx({ playerId: \"ce4d4c45-53cb-40cc-88d1-30d789f5b276\" }).render(\"9b67500bc68b4bf2997a1e7f878fb25e\"); });</script>\n\n<meta name=\"robots\" content=\"max-image-preview:large\">\n\t\n<link rel=\"stylesheet\" href=\"https://a.pub.network/bleepingcomputer-com/cls.css\">\n<script data-cfasync=\"false\" type=\"text/javascript\">\n  var freestar = freestar || {};\n  freestar.queue = freestar.queue || [];\n  freestar.config = freestar.config || {};\n  // Tag IDs set here, must match Tags served in the Body for proper setup\n  freestar.config.enabled_slots = [];\n\tfreestar.queue.push(function() {\n\t  \n\t  googletag.pubads().setTargeting('section', ['news','security']);\n          freestar.deleteStickyFooter();\n          freestar.deleteStickyFooter();\n\t});\n\n  freestar.initCallback = function () { (freestar.config.enabled_slots.length === 0) ? freestar.initCallbackCalled = false : freestar.newAdSlots(freestar.config.enabled_slots) }\n</script>\n<script src=\"https://a.pub.network/bleepingcomputer-com/pubfig.min.js\" async></script>\n\n<!--BEGIN FIRSTIMPRESSION TAG - bleepingcomputer.com -->\n<script data-cfasync='false' type='text/javascript'>\n    ;(function(o) {\n        var w=window.top,a='apdAdmin',ft=w.document.getElementsByTagName('head')[0],\n        l=w.location.href,d=w.document;w.apd_options=o;\n        if(l.indexOf('disable_fi')!=-1) { console.error(\"disable_fi has been detected in URL. FI functionality is disabled for this page view.\"); return; }\n        var fiab=d.createElement('script'); fiab.type = 'text/javascript';\n        fiab.src=o.scheme+'ecdn.analysis.fi/static/js/fab.js';fiab.id='fi-'+o.websiteId;\n        ft.appendChild(fiab, ft);if(l.indexOf(a)!=-1) w.localStorage[a]=1; var aM = w.localStorage[a]==1, fi=d.createElement('script'); \n        fi.type='text/javascript'; fi.async=true; if(aM) fi['data-cfasync']='false';\n        fi.src=o.scheme+(aM?'cdn':'ecdn') + '.firstimpression.io/' + (aM ? 'fi.js?id='+o.websiteId : 'fi_client.js');\n        ft.appendChild(fi);\n    })({ \n        'websiteId': 5971, \n        'scheme':    '//'\n    });\n</script>\n<!-- END FIRSTIMPRESSION TAG -->\n\n\n<script data-cfasync=\"false\">\n  (function () {\n    document.currentScript.remove();\n    const s = document.createElement(\"script\");\n    s.src = \"https://fs-loader.com/script/\" + location.hostname + \".js\";\n    s.setAttribute(\"data-sdk\", \"e/1.0.5\");\n    s.addEventListener(\"error\", () => {\n      console.error(\n        \"[Ad-Shield] The script has been blocked or has expired. Please refer to the Ad-Shield documentation for guidance or reach out to your Account Manager for assistance.\"\n      );\n    });\n    document.head.appendChild(s);\n  })();\n</script>\n\n<!-- Google tag (gtag.js) -->\n<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-GD465VRQLD\"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n\n  gtag('config', 'G-GD465VRQLD');\n</script>\n<!-- End GA -->\n\n\n\n</head>\n\n<body>\n\n\n\n<div class=\"bc_wrapper\">\n\n<!-- Start Header Section -->\n\n<header>\n\n\t<div class=\"container\">\n    \t<div class=\"row\">\n        \t<div class=\"col-md-4\">\n            \t<a class=\"bc_logo\" aria-label=\"BleepingComputer.com\" href=\"https://www.bleepingcomputer.com/\"><img src=\"https://www.bleepstatic.com/images/site/logo.png\" width=\"287\" height=\"24\" alt=\"BleepingComputer.com logo\"></a>\n            </div>\n            <div class=\"col-md-8\">\n\t\t\n            \t<ul class=\"bc_social_icons\">\n                    <li><a href=\"https://www.facebook.com/BleepingComputer\" aria-label=\"Visit BleepingComputer's Facebook profile\"><span title=\"BleepingComputer Facebook page\" class=\"fa-brands fa-facebook-f\"></span></a></li>\n                    <li><a href=\"https://twitter.com/BleepinComputer\" aria-label=\"Visit BleepingComputer's Twitter profile\"><span aria-hidden=\"true\" title=\"BleepingComputer Twitter page\" class=\"fa-brands fa-twitter\"></span></a></li>\n\t\t    <li><a href=\"https://infosec.exchange/@BleepingComputer\" aria-label=\"Visit BleepingComputer's Mastodon profile\"><span aria-hidden=\"true\" title=\"BleepingComputer Mastodon profile\" class=\"fa-brands fa-mastodon\"></span></a></li>\n                    <li><a href=\"https://www.bleepingcomputer.com/feed/\" aria-label=\"BleepingComputer's RSS Feeds\"><span aria-hidden=\"true\" title=\"RSS feed\" class=\"fa fa-rss\"></span></a></li>\n                </ul>\n                <div class=\"bc_search_box\">\n                    <form title=\"Search site\" action=\"https://www.bleepingcomputer.com/search/\">\n\t\t\t<input type=\"hidden\" name=\"cx\" value=\"partner-pub-0920899300397823:3529943228\" />\n\t\t\t<input type=\"hidden\" name=\"cof\" value=\"FORID:10\" />\n\t\t\t<input type=\"hidden\" name=\"ie\" value=\"UTF-8\" />\n                        <input type=\"search\" name=\"q\" aria-label=\"Search Site\" placeholder=\"Search Site\" />\n                    </form>\n\t\t    <script async type=\"text/javascript\" src=\"https://www.google.com/coop/cse/brand?form=cse-search-box&amp;lang=en\"></script>\n                </div>\n                                <div class=\"bc_login\">\n\t            <input aria-label=\"Login to BleepingComputer\" type=\"submit\" value=\"Login\" class=\"bc_login_btn\">\n                    <input aria-label=\"Register account\" type=\"submit\" value=\"Sign up\" class=\"bc_signup_btn\" onclick=\"window.location='https://www.bleepingcomputer.com/forums/index.php?app=core&module=global&section=register';\" />\n                </div>\n            </div>\n        </div>\n    </div>\n\n\n <!-- Start Navigation -->\n    \n    <nav class=\"bc_navigation\">\n    \t<div class=\"container\">\n\t       \n               <span id=\"toggle-nav\" class=\"toggle-site-nav\">\n                \t<span></span>\n                </span>\n            \t<div class=\"site-nav\" id=\"nav\" role=\"navigation\">\n                    <ul class=\"bc_social_icons bc_mob\">\n                        <li><a href=\"https://www.facebook.com/BleepingComputer\" aria-label=\"Visit BleepingComputer's Facebook profile\"><span aria-hidden=\"true\" class=\"fa-brands fa-facebook-f\"></span></a></li>\n                        <li><a href=\"https://twitter.com/BleepinComputer\" aria-label=\"Visit BleepingComputer's Twitter profile\"><span aria-hidden=\"true\" class=\"fa-brands fa-twitter\"></span></a></li>\n\t\t\t<li><a href=\"https://infosec.exchange/@BleepingComputer\" aria-label=\"Visit BleepingComputer's Mastodon profile\"><span aria-hidden=\"true\" title=\"BleepingComputer Mastodon profile\" class=\"fa-brands fa-mastodon\"></span></a></li>\n                        <li><a href=\"https://www.bleepingcomputer.com/feed/\" aria-label=\"BleepingComputer's RSS Feeds\"><span aria-hidden=\"true\" title=\"RSS feed\" class=\"fa fa-rss\"></span></a></li>\n                    </ul>\n                    <div class=\"bc_search_box bc_mob\">\n                        <form action=\"https://www.bleepingcomputer.com/search/\">\n                         <input type=\"hidden\" name=\"cx\" value=\"partner-pub-0920899300397823:3529943228\" />\n                         <input type=\"hidden\" name=\"cof\" value=\"FORID:10\" />\n                         <input type=\"hidden\" name=\"ie\" value=\"UTF-8\" />\n                         <input type=\"search\" name=\"q\" aria-label=\"Search Site\" placeholder=\"Search Site\" />\n                        </form>\n                        <script async type=\"text/javascript\" src=\"https://www.google.com/coop/cse/brand?form=cse-search-box&amp;lang=en\"></script>\n                    </div>\n                    \t\t    <div class=\"bc_login bc_mob\">\n                        <input aria-label=\"Login to BleepingComputer\" type=\"submit\" value=\"Login\" class=\"bc_login_btn\">\n                        <input aria-label=\"Register account\" type=\"submit\" value=\"Sign up\" class=\"bc_signup_btn\" onclick=\"window.location='https://www.bleepingcomputer.com/forums/index.php?app=core&module=global&section=register';\">\n                    </div>\n\n                      <ul class=\"nav-menu\">\n\t\t\t\n                        <li class=\"bc_dropdown\"><a href=\"https://www.bleepingcomputer.com/\">News</a>\n                            <div class=\"bc_sub_menu\">\n                                <div role=\"tabpanel\">\n                                  <ul class=\"nav nav-tabs\" role=\"tablist\" id=\"bc_drop_tab\">\n                                    \n                                    <li class=\"active\"><a href=\"#nfeatured\" role=\"tab\" data-toggle=\"tab\">Featured</a></li>\n\n                                    <li><a href=\"#nlatest\" role=\"tab\" data-toggle=\"tab\">Latest</a></li>\n\n                                  </ul>\n                                  <div class=\"tab-content\">\n\t\t\t\t   \n                                    <div role=\"tabpanel\" class=\"tab-pane active\" id=\"nfeatured\">\n                                        <ul>\n\t\t\t\t\t  \n                                            <li>\n\t\t\t\t\t\t<a href=\"https://www.bleepingcomputer.com/news/security/hackers-exploit-34-zero-days-on-first-day-of-pwn2own-ireland/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/content/hl-images/2025/08/01/thumb/211x130_Pwn2Own-Ireland.jpg\" alt=\"Hackers exploit 34 zero-days on first day of Pwn2Own Ireland\" height=\"130px\" width=\"100%\">\n                                                 <p>Hackers exploit 34 zero-days on first day of Pwn2Own Ireland</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"https://www.bleepingcomputer.com/news/security/russian-hackers-evolve-malware-pushed-in-i-am-not-a-robot-clickfix-attacks/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/content/hl-images/2025/10/21/thumb/211x130_Robot.jpg\" alt=\"Russian hackers evolve malware pushed in \"I am not a robot\" captchas\" height=\"130px\" width=\"100%\">\n                                                 <p>Russian hackers evolve malware pushed in \"I am not a robot\" captchas</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-usb-issue-that-made-windows-recovery-unusable/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/content/hl-images/2025/03/28/thumb/211x130_Windows_headpic.jpg\" alt=\"Windows 11 KB5070773 emergency update fixes Windows Recovery issues\" height=\"130px\" width=\"100%\">\n                                                 <p>Windows 11 KB5070773 emergency update fixes Windows Recovery issues</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"https://www.bleepingcomputer.com/news/security/over-75-000-watchguard-security-devices-vulnerable-to-critical-rce/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/content/hl-images/2025/09/18/thumb/211x130_WatchGuard.jpg\" alt=\"Over 75,000 WatchGuard security devices vulnerable to critical RCE\" height=\"130px\" width=\"100%\">\n                                                 <p>Over 75,000 WatchGuard security devices vulnerable to critical RCE</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                        </ul>\n                                    </div>\n\n                                    <div role=\"tabpanel\" class=\"tab-pane\" id=\"nlatest\">\n                                        <ul>\n\t\t\t\t\t  \n                                            <li>\n\t\t\t\t\t\t<a href=\"https://www.bleepingcomputer.com/news/security/meta-launches-new-anti-scam-tools-for-whatsapp-and-messenger/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/content/hl-images/2025/04/14/thumb/211x130_Meta.jpg\" alt=\"Meta launches new anti-scam tools for WhatsApp and Messenger\" height=\"130px\" width=\"100%\">\n                                                 <p>Meta launches new anti-scam tools for WhatsApp and Messenger</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"https://www.bleepingcomputer.com/news/security/finwise-data-breach-shows-why-encryption-is-your-last-defense/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/content/posts/2025/10/21/thumb/211x130_penta-header.png\" alt=\"FinWise data breach shows why encryption is your last defense\" height=\"130px\" width=\"100%\">\n                                                 <p>FinWise data breach shows why encryption is your last defense</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"https://www.bleepingcomputer.com/news/security/phantomcaptcha-clickfix-attack-targets-ukraine-war-relief-orgs/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/content/hl-images/2024/12/15/thumb/211x130_hacker-card.jpg\" alt=\"PhantomCaptcha ClickFix attack targets Ukraine war relief orgs\" height=\"130px\" width=\"100%\">\n                                                 <p>PhantomCaptcha ClickFix attack targets Ukraine war relief orgs</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"https://www.bleepingcomputer.com/offer/deals/store-your-data-with-2tb-of-filejump-storage-in-this-6997-lifetime-deal/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/content/hl-images/2025/05/04/thumb/211x130_filejump.jpg\" alt=\"Store your data with 2TB of FileJump storage in this $69.97 lifetime deal\" height=\"130px\" width=\"100%\">\n                                                 <p>Store your data with 2TB of FileJump storage in this $69.97 lifetime deal</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                        </ul>\n                                    </div>\n\n                                  </div>\n                                </div>\n                            </div>\n                        </li>\n\n                        <li class=\"bc_dropdown\"><a href=\"https://www.bleepingcomputer.com/tutorials/\">Tutorials</a>\n                            <div class=\"bc_sub_menu\">\n                                <div role=\"tabpanel\">\n                                  <ul class=\"nav nav-tabs\" role=\"tablist\" id=\"bc_drop_tab\">\n                                    \n                                    <li class=\"active\"><a href=\"#tlatest\" role=\"tab\" data-toggle=\"tab\">Latest</a></li>\n\n                                    <li><a href=\"#popular\" role=\"tab\" data-toggle=\"tab\">Popular</a></li>\n\n                                  </ul>\n                                  <div class=\"tab-content\">\n\t\t\t\t   \n                                    <div role=\"tabpanel\" class=\"tab-pane active\" id=\"tlatest\">\n                                        <ul>\n\t\t\t\t\t  \n                                            <li>\n\t\t\t\t\t\t<a href=\"/tutorials/how-to-access-the-dark-web-using-the-tor-browser/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/images/site/tutorials/nav-header-images/7/375-Tor-headpic.jpg\" alt=\"How to access the Dark Web using the Tor Browser\" height=\"130px\" width=\"100%\">\n                                                 <p>How to access the Dark Web using the Tor Browser</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"/tutorials/how-to-enable-kernel-mode-hardware-enforced-stack-protection-in-windows-11/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/images/site/tutorials/nav-header-images/7/374-Microsoft_Defender_headpic.jpg\" alt=\"How to enable Kernel-mode Hardware-enforced Stack Protection in Windows 11\" height=\"130px\" width=\"100%\">\n                                                 <p>How to enable Kernel-mode Hardware-enforced Stack Protection in Windows 11</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"/tutorials/how-to-use-the-windows-registry-editor/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/images/site/tutorials/nav-header-images/7/371-windows-registry-editor.jpg\" alt=\"How to use the Windows Registry Editor\" height=\"130px\" width=\"100%\">\n                                                 <p>How to use the Windows Registry Editor</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"/tutorials/how-to-backup-and-restore-the-windows-registry/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/images/site/tutorials/nav-header-images/7/372-Windows.jpg\" alt=\"How to backup and restore the Windows Registry\" height=\"130px\" width=\"100%\">\n                                                 <p>How to backup and restore the Windows Registry</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                        </ul>\n                                    </div>\n\n                                    <div role=\"tabpanel\" class=\"tab-pane\" id=\"popular\">\n                                        <ul>\n\t\t\t\t\t  \n                                            <li>\n\t\t\t\t\t\t<a href=\"/tutorials/how-to-start-windows-in-safe-mode/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/images/site/tutorials/nav-header-images/1/61-startup-settings.png\" alt=\"How to start Windows in Safe Mode\" height=\"130px\" width=\"100%\">\n                                                 <p>How to start Windows in Safe Mode</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"/tutorials/how-to-remove-a-trojan-virus-worm-or-malware/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/images/site/tutorials/nav-header-images/2/101-Cerber-wallpaper.png\" alt=\"How to remove a Trojan, Virus, Worm, or other Malware\" height=\"130px\" width=\"100%\">\n                                                 <p>How to remove a Trojan, Virus, Worm, or other Malware</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"/tutorials/show-hidden-files-in-windows-7/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/images/site/tutorials/nav-header-images/3/151-show-hidden-files.jpg\" alt=\"How to show hidden files in Windows 7\" height=\"130px\" width=\"100%\">\n                                                 <p>How to show hidden files in Windows 7</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"/tutorials/how-to-see-hidden-files-in-windows/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/images/site/tutorials/nav-header-images/1/62-hidden-files.jpg\" alt=\"How to see hidden files in Windows\" height=\"130px\" width=\"100%\">\n                                                 <p>How to see hidden files in Windows</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                        </ul>\n                                    </div>\n\n                                  </div>\n                                </div>\n                            </div>\n                        </li>\n\n                        <li class=\"bc_dropdown\"><a href=\"https://www.bleepingcomputer.com/virus-removal/\">Virus Removal Guides</a>\n                            <div class=\"bc_sub_menu\">\n                                <div role=\"tabpanel\">\n                                  <ul class=\"nav nav-tabs\" role=\"tablist\" id=\"bc_drop_tab\">\n                                    \n                                    <li class=\"active\"><a href=\"#vlatest\" role=\"tab\" data-toggle=\"tab\">Latest</a></li>\n\n                                    <li><a href=\"#vmost\" role=\"tab\" data-toggle=\"tab\">Most Viewed</a></li>\n\n                                    <li><a href=\"#ransomware\" role=\"tab\" data-toggle=\"tab\">Ransomware</a></li>\n\n                                  </ul>\n                                  <div class=\"tab-content\">\n\t\t\t\t   \n                                    <div role=\"tabpanel\" class=\"tab-pane active\" id=\"vlatest\">\n                                        <ul>\n\t\t\t\t\t  \n                                            <li>\n\t\t\t\t\t\t<a href=\"/virus-removal/remove-theonlinesearch.com-search-redirect\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/removal-guides/t/Theonlinesearch.com/theonlinesearch.com-search-redirect-thmb-350.jpg\" alt=\"Remove the Theonlinesearch.com Search Redirect\" height=\"130px\" width=\"100%\">\n                                                 <p>Remove the Theonlinesearch.com Search Redirect</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"/virus-removal/remove-smartwebfinder.com-search-redirect\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/removal-guides/s/smartwebfinder-redirect/smartwebfinder-redirect-thmb-350.jpg\" alt=\"Remove the Smartwebfinder.com Search Redirect\" height=\"130px\" width=\"100%\">\n                                                 <p>Remove the Smartwebfinder.com Search Redirect</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"/virus-removal/how-to-remove-the-pblock-adware-extension\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/removal-guides/p/pblock/pblock-extension-thmb-350.jpg\" alt=\"How to remove the PBlock+ adware browser extension\" height=\"130px\" width=\"100%\">\n                                                 <p>How to remove the PBlock+ adware browser extension</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"/virus-removal/remove-toksearches.xyz-search-redirect\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/removal-guides/t/toksearches/toksearches-redirect-thmb-350.jpg\" alt=\"Remove the Toksearches.xyz Search Redirect\" height=\"130px\" width=\"100%\">\n                                                 <p>Remove the Toksearches.xyz Search Redirect</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                        </ul>\n                                    </div>\n\n                                    <div role=\"tabpanel\" class=\"tab-pane\" id=\"vmost\">\n                                        <ul>\n\t\t\t\t\t  \n                                            <li>\n\t\t\t\t\t\t<a href=\"/virus-removal/remove-security-tool\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/swr-guides/s/securitytool/security-tool-thmb-350.jpg\" alt=\"Remove Security Tool and SecurityTool (Uninstall Guide)\" height=\"130px\" width=\"100%\">\n                                                 <p>Remove Security Tool and SecurityTool (Uninstall Guide)</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"/virus-removal/remove-vundo-virtumonde\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/images/site/navigation/generic-chalkboard-211x130.jpg\" alt=\"How to Remove WinFixer / Virtumonde / Msevents / Trojan.vundo\" height=\"130px\" width=\"100%\">\n                                                 <p>How to Remove WinFixer / Virtumonde / Msevents / Trojan.vundo</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"/virus-removal/uninstall-antivirus-2009\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/swr-guides/a/antivirus-2009/antivirus-2009-thmb-350.jpg\" alt=\"How to remove Antivirus 2009 (Uninstall Instructions)\" height=\"130px\" width=\"100%\">\n                                                 <p>How to remove Antivirus 2009 (Uninstall Instructions)</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"/virus-removal/remove-tdss-tdl3-alureon-rootkit-using-tdsskiller\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/swr-guides/tools/tdsskiller/tdsskiller-start-thmb-350.jpg\" alt=\"How to remove Google Redirects or the TDSS, TDL3, or Alureon rootkit using TDSSKiller\" height=\"130px\" width=\"100%\">\n                                                 <p>How to remove Google Redirects or the TDSS, TDL3, or Alureon rootkit using TDSSKiller</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                        </ul>\n                                    </div>\n\n                                    <div role=\"tabpanel\" class=\"tab-pane\" id=\"ransomware\">\n                                        <ul>\n\t\t\t\t\t  \n                                            <li>\n\t\t\t\t\t\t<a href=\"/virus-removal/locky-ransomware-information-help\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/swr-guides/l/locky/locky-header-thmb-350.png\" alt=\"Locky Ransomware Information, Help Guide, and FAQ\" height=\"130px\" width=\"100%\">\n                                                 <p>Locky Ransomware Information, Help Guide, and FAQ</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"/virus-removal/cryptolocker-ransomware-information\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/swr-guides/c/cryptolocker/CryptoLocker-thmb-350.jpg\" alt=\"CryptoLocker Ransomware Information Guide and FAQ\" height=\"130px\" width=\"100%\">\n                                                 <p>CryptoLocker Ransomware Information Guide and FAQ</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"/virus-removal/cryptorbit-ransomware-information\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/swr-guides/c/cryptorbit/howdecrypt-thmb-350.gif\" alt=\"CryptorBit and HowDecrypt Information Guide and FAQ\" height=\"130px\" width=\"100%\">\n                                                 <p>CryptorBit and HowDecrypt Information Guide and FAQ</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"/virus-removal/cryptodefense-ransomware-information\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/swr-guides/c/CryptoDefense/how_decrypt-html-thmb-350.jpg\" alt=\"CryptoDefense and How_Decrypt Ransomware Information Guide and FAQ\" height=\"130px\" width=\"100%\">\n                                                 <p>CryptoDefense and How_Decrypt Ransomware Information Guide and FAQ</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                        </ul>\n                                    </div>\n\n                                  </div>\n                                </div>\n                            </div>\n                        </li>\n\n                        <li class=\"bc_dropdown\"><a href=\"https://www.bleepingcomputer.com/download/\">Downloads</a>\n                            <div class=\"bc_sub_menu\">\n                                <div role=\"tabpanel\">\n                                  <ul class=\"nav nav-tabs\" role=\"tablist\" id=\"bc_drop_tab\">\n                                    \n                                    <li class=\"active\"><a href=\"#dlatest\" role=\"tab\" data-toggle=\"tab\">Latest</a></li>\n\n                                    <li><a href=\"#most\" role=\"tab\" data-toggle=\"tab\">Most Downloaded</a></li>\n\n                                  </ul>\n                                  <div class=\"tab-content\">\n\t\t\t\t   \n                                    <div role=\"tabpanel\" class=\"tab-pane active\" id=\"dlatest\">\n                                        <ul>\n\t\t\t\t\t  \n                                            <li>\n\t\t\t\t\t\t<a href=\"https://www.bleepingcomputer.com/download/qualys-browsercheck/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/download/nav-header-images/2/201-qualys-browsercheck-for-windows.jpg\" alt=\"Qualys BrowserCheck\" height=\"130px\" width=\"100%\">\n                                                 <p class=\"center\">Qualys BrowserCheck</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"https://www.bleepingcomputer.com/download/stopdecrypter/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/download/nav-header-images/2/200-stopdecrypter.jpg\" alt=\"STOPDecrypter\" height=\"130px\" width=\"100%\">\n                                                 <p class=\"center\">STOPDecrypter</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"https://www.bleepingcomputer.com/download/auroradecrypter/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/download/nav-header-images/1/199-auroradecrypter.jpg\" alt=\"AuroraDecrypter\" height=\"130px\" width=\"100%\">\n                                                 <p class=\"center\">AuroraDecrypter</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"https://www.bleepingcomputer.com/download/fileslockerdecrypter/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/download/nav-header-images/1/198-fileslockerdecryptor.jpg\" alt=\"FilesLockerDecrypter\" height=\"130px\" width=\"100%\">\n                                                 <p class=\"center\">FilesLockerDecrypter</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                        </ul>\n                                    </div>\n\n                                    <div role=\"tabpanel\" class=\"tab-pane\" id=\"most\">\n                                        <ul>\n\t\t\t\t\t  \n                                            <li>\n\t\t\t\t\t\t<a href=\"/download/adwcleaner/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/download/nav-header-images/0/96-adwcleaner.jpg\" alt=\"AdwCleaner\" height=\"130px\" width=\"100%\">\n                                                 <p class=\"center\">AdwCleaner</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"/download/combofix/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/download/nav-header-images/0/9-combofix.jpg\" alt=\"ComboFix\" height=\"130px\" width=\"100%\">\n                                                 <p class=\"center\">ComboFix</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"/download/rkill/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/download/nav-header-images/0/8-rkill.jpg\" alt=\"RKill\" height=\"130px\" width=\"100%\">\n                                                 <p class=\"center\">RKill</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"/download/junkware-removal-tool/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/download/nav-header-images/0/98-junkware-removal-tool.jpg\" alt=\"Junkware Removal Tool\" height=\"130px\" width=\"100%\">\n                                                 <p class=\"center\">Junkware Removal Tool</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                        </ul>\n                                    </div>\n\n                                  </div>\n                                </div>\n                            </div>\n                        </li>\n\n                        <li class=\"bc_dropdown\"><a href=\"https://deals.bleepingcomputer.com/\">Deals</a>\n                            <div class=\"bc_sub_menu\">\n                                <div role=\"tabpanel\">\n                                  <ul class=\"nav nav-tabs\" role=\"tablist\" id=\"bc_drop_tab\">\n                                    \n                                    <li class=\"active\"><a href=\"#dcategories\" role=\"tab\" data-toggle=\"tab\">Categories</a></li>\n\n                                  </ul>\n                                  <div class=\"tab-content\">\n\t\t\t\t   \n<div role=\"tabpanel\" class=\"tab-pane active\" id=\"dcategories\">\n                                        <ul>\n\t\t\t\t\t  \n                                            <li>\n\t\t\t\t\t\t<a href=\"https://deals.bleepingcomputer.com/deals/elearning?utm_source=bleepingcomputer.com&utm_medium=dd_cat\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/images/deals/elearning-nav.jpg\" alt=\"eLearning\" height=\"130px\" width=\"100%\">\n                                                 <p align='center'>eLearning</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"https://deals.bleepingcomputer.com/deals/certifications?utm_source=bleepingcomputer.com&utm_medium=dd_cat\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/images/deals/it-certification-nav.jpg\" alt=\"IT Certification Courses\" height=\"130px\" width=\"100%\">\n                                                 <p align='center'>IT Certification Courses</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"https://deals.bleepingcomputer.com/deals/gear-gadgets?utm_source=bleepingcomputer.com&utm_medium=dd_cat\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" data-src=\"https://www.bleepstatic.com/images/deals/gear-gadgets-nav.jpg\" class=\"b-lazy\" alt=\"Gear &amp; Gadgets\" height=\"130px\" width=\"100%\">\n                                                 <p align='center'>Gear + Gadgets</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"https://deals.bleepingcomputer.com/collections/tag-cyber-security?utm_source=bleepingcomputer.com&utm_medium=dd_cat\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" data-src=\"https://www.bleepstatic.com/images/deals/security-nav.jpg\" class=\"b-lazy\" alt=\"Security\" height=\"130px\" width=\"100%\">\n                                                 <p align='center'>Security</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                        </ul>\n                                    </div>\n\n                                  </div>\n                                </div>\n                            </div>\n                        </li>\n\n                        <li class=\"bc_dropdown\"><a href=\"https://www.bleepingcomputer.com/vpn/\">VPNs</a>\n                            <div class=\"bc_sub_menu\">\n                                <div role=\"tabpanel\">\n                                  <ul class=\"nav nav-tabs\" role=\"tablist\" id=\"bc_drop_tab\">\n                                    \n                                    <li class=\"active\"><a href=\"#vpopular\" role=\"tab\" data-toggle=\"tab\">Popular</a></li>\n\n                                  </ul>\n                                  <div class=\"tab-content\">\n\t\t\t\t   \n                                    <div role=\"tabpanel\" class=\"tab-pane active\" id=\"vpopular\">\n                                        <ul>\n\t\t\t\t\t  \n                                            <li>\n\t\t\t\t\t\t<a href=\"https://www.bleepingcomputer.com/vpn/guides/best-vpn/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/content/posts/2025/05/29/170x170_Best_VPN_services.jpg\" alt=\"Best VPNs\" height=\"130px\" width=\"100%\">\n                                                 <p>Best VPNs</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"https://www.bleepingcomputer.com/vpn/guides/change-ip-address/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/content/posts/2023/03/16/change_ip_address_(2).jpg\" alt=\"How to change IP address\" height=\"130px\" width=\"100%\">\n                                                 <p>How to change IP address</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"https://www.bleepingcomputer.com/vpn/guides/access-dark-web-safely/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/content/posts/2023/03/16/How_to_Access_the_Dark_Web_Safely_(1).jpg\" alt=\"Access the dark web safely\" height=\"130px\" width=\"100%\">\n                                                 <p>Access the dark web safely</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                            <li>\n\t\t\t\t\t\t<a href=\"https://www.bleepingcomputer.com/vpn/guides/watch-youtube-tv-abroad-vpn/\" class=\"nmic\">\n                                                 <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/content/posts/2023/03/24/How_to_watch_YouTube_TV_from_anywhere_with_a_VPN.jpg\" alt=\"Best VPN for YouTube\" height=\"130px\" width=\"100%\">\n                                                 <p>Best VPN for YouTube</p>\n\t\t\t\t\t        </a>\n                                            </li>\n\n                                        </ul>\n                                    </div>\n\n                                  </div>\n                                </div>\n                            </div>\n                        </li>\n\n                        <li><a href=\"https://www.bleepingcomputer.com/forums/\">Forums</a></li>\n                        <li class=\"bc_dropdown bc_more_nav\"><a aria-label=\"Click here to see more BleepingComputer sections\" id=\"more_dd\" href=\"#\">More</a>\n                        \t<ul id=\"bc_more-nav\" class=\"bc_more_submenu\">\n                              <li><a href=\"https://www.bleepingcomputer.com/startups/\">Startup Database</a></li>\n\t\t\t      <li><a href=\"https://www.bleepingcomputer.com/uninstall/\">Uninstall Database</a></li>\n                              <li><a href=\"https://www.bleepingcomputer.com/glossary/\">Glossary</a></li>\n                              <li><a href=\"https://www.bleepingcomputer.com/forums/t/730914/the-bleepingcomputer-official-discord-chat-server-come-join-the-fun/\">Chat on Discord</a></li>\n\t\t\t      <li><a href=\"https://www.bleepingcomputer.com/news-tip/\">Send us a Tip!</a></li>\n\t\t\t      <li><a href=\"https://www.bleepingcomputer.com/welcome-guide/\">Welcome Guide</a></li>\n                            </ul>\n                        </li>\n                     </ul>\n           \t\t</div>\n         </div>\n    </nav>\n </header>   \n<!-- End Header Section -->\n\n<section class=\"cz-oa-wrapp\" id=\"wibble\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"cz-toa-wrapp\">\n\t \n<div align=\"center\">\n <a href=\"https://www.threatlocker.com/stop-ransomware-before-it-starts?utm_source=bleeping_computer&utm_medium=sponsor&utm_campaign=not-all-allowlisting_q4_25&utm_content=not-all-allowlisting-970x250&utm_term=display\" rel=\"nofollow noopener\" target=\"_blank\"><img src=\"https://www.bleepstatic.com/c/t/threatlocker/ThreatLocker-Not-all-allowlisting-970-250.jpg\" width=\"970\" height=\"auto\" alt=\"Acronis Electron stealers header\"></a>\n</div>\n\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n\n<section>\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"cz-breadcrumb-outer-wrapp\">\n          <div class=\"cz-breadcrumb-left-area\">\n            <div class=\"cz-breadcrumb\">\n              <ul itemscope itemtype=\"https://schema.org/BreadcrumbList\">\n                <li itemprop=\"itemListElement\" itemscope itemtype=\"https://schema.org/ListItem\"><a href=\"https://www.bleepingcomputer.com/\" itemprop=\"item\"><span itemprop=\"name\">Home</span></a><meta itemprop=\"position\" content=\"1\" /></li><li itemprop=\"itemListElement\" itemscope itemtype=\"https://schema.org/ListItem\"><span itemprop=\"name\"><a href=\"https://www.bleepingcomputer.com/news/\" itemprop=\"item\">News</a></span><meta itemprop=\"position\" content=\"2\" /></li><li itemprop=\"itemListElement\" itemscope itemtype=\"https://schema.org/ListItem\"><span itemprop=\"name\"><a href=\"https://www.bleepingcomputer.com/news/security/\" itemprop=\"item\">Security</a></span><meta itemprop=\"position\" content=\"3\" /></li><li class=\"active\" itemprop=\"itemListElement\" itemscope itemtype=\"https://schema.org/ListItem\"><span itemprop=\"name\">Cursor, Windsurf IDEs riddled with 94  n-day Chromium vulnerabilities</span><meta itemprop=\"position\" content=\"4\" /></li>\n              </ul>\n            </div>\n          </div>\n          <div class=\"cz-breadcrumb-right-area\">\n            <div class=\"cz-like-wrapper\">\n              <ul>\n                <li><div class=\"addthis_sharing_toolbox\"></div></li>\n\t                        <li class=\"cz-print-icon\"><a aria-label=\"Print article\" href=\"#\">&nbsp;</a></li>\n              </ul>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n    \n  </div>\n</section>\n<!-- Start Content Section -->\n\n<section class=\"bc_main_content\">\n  <div class=\"container\">\n    <div class=\"row\">\n      <div class=\"col-md-8\">\n        <div class=\"cz-main-left-section\">\n         \n<article><div class=\"article_section\">\n          <h1>Cursor, Windsurf IDEs riddled with 94+ n-day Chromium vulnerabilities</h1>\n          <div class=\"cz-news-story-title-section\">\n            <div class=\"cz-news-title-left-area\">\n                            By <h6><a rel=\"author\" href=\"https://www.bleepingcomputer.com/author/bill-toulas/\" class=\"author\"><span itemprop=\"author\" itemscope itemtype=\"https://schema.org/Person\"><span itemprop=\"name\">Bill Toulas</span></span></a></h6>\n            </div>\n\t    <meta itemprop=\"articleSection\" content=\"Security\"><meta itemprop=\"articleSection\" content=\"Artificial Intelligence\"><div class=\"cz-news-title-right-area\">\n              <ul><li class=\"cz-news-date\">October 21, 2025</li>\n                <li class=\"cz-news-time\">03:00 PM</li>\n                \n                <li class=\"cz-news-comment\"><a href=\"#comments\">1</a></li>\n              </ul></div>\n          </div>\n\t  <div class=\"articleBody\">\n\t   \n<p style=\"text-align:center\"><img alt=\"Cursor, Windsurf IDEs riddled with 94+ n-day Chromium vulnerabilities\" height=\"900\" src=\"https://www.bleepstatic.com/content/hl-images/2025/01/31/Chromium-headpic.jpg\" width=\"1600\"></p>\r\n\r\n<p>The latest releases of&nbsp;Cursor and Windsurf integrated development environments&nbsp;are vulnerable to more than 94 known and patched security issues in the Chromium browser and the V8 JavaScript engine.</p>\r\n\r\n<p>An estimated&nbsp;1.8 million developers, the userbase for the two IDEs, are exposed to the risks.</p>\r\n\r\n<p>Ox Security researchers&nbsp;explain that both development environments are built on old software that includes outdated versions of the open-source Chromium browser and Google's V8 engine.</p>\r\n\r\n<p>They say that Cursor and Windsurf rely on old versions of VS Code that include old releases of the Electron framework for building cross-platform apps using web technologies (HTML, CSS, JavaScript).</p>\r\n\r\n<p>\"Since Electron embeds Chromium and V8, this means the IDEs rely on outdated Chromium and V8 engines, exposing them to vulnerabilities that have already been patched in newer versions,\" the researchers say in a <a href=\"http://www.ox.security/blog/94-Vulnerabilities-in-Cursor-and-Windsurf-Put-1-8M-Developers-at-Risk/\" target=\"_blank\" rel=\"nofollow noopener\">report</a> shared with BleepingComputer.</p>\r\n\r\n<p>The researchers say that Cursor and Windsurf are vulnerable to at least 94 vulnerabilities present in the Chromium builds they use.</p>\r\n\r\n<p>Despite the security issue being disclosed responsibly since October 12, the risks are still present as&nbsp;Cursor considered the report&nbsp;\"out of scope\" and Windsurf did not respond.</p>\r\n\r\n<div style=\"text-align:center\">\r\n<figure class=\"image\" style=\"display:inline-block\"><img alt=\"Inheriting n-days from older Electron apps\" height=\"590\" src=\"https://www.bleepstatic.com/images/news/u/1220909/2025/October/image(1).jpg\" width=\"684\"><figcaption><strong>Inheriting n-days from older Electron apps</strong><br><em>Source: Ox Security</em></figcaption></figure></div>\r\n\r\n<h2>Chrome risks on the IDE</h2>\r\n\r\n<p>Cursor and Windsurf are AI-powered code editors forked from Visual Studio Code. They integrate large-language models (LLMs) to help developers write software more easily and quickly.</p>\r\n\r\n<p>They are distributed as Electron apps, meaning an application runtime that packages a specific Chromium build for rendering web content, and includes the browser's V8 JavaScript engine in the&nbsp;binary.</p>\r\n\r\n<p>The specific Electron release pins a Chromium + V8 version, and if the vendor doesn't upgrade it, flaws fixed in every subsequent release become exploitable risks in the IDE.</p>\r\n\r\n<p>Ox Security demonstrated that it is possible to exploit the Maglev JIT integer overflow described in CVE-2025-7656 through a deeplink, which executes Cursor and injects a prompt instructing its browser to visit a remote URL hosting an exploit payload.</p>\r\n\r\n<p>The remote page serves JavaScript that triggers CVE-2025-7656 exploitation, causing denial of service by crashing the renderer.</p>\r\n\r\n<p>Nir Zadok and Moshe Siman Tov Bustan of Ox Security demonstrated their findings by targeting Cursor IDE with an exploit for CVE-2025-7656, an integer overflow vulnerability in Google Chrome's V8 engine&nbsp;<a href=\"https://www.bleepingcomputer.com/news/security/google-fixes-actively-exploited-sandbox-escape-zero-day-in-chrome/\" target=\"_blank\" rel=\"nofollow noopener\">fixed</a>&nbsp;on July 15.</p>\r\n\r\n<p>The proof-of-concept exploit caused Cursor to enter a denial-of-service condition (crash), as shown in the video below:</p>\r\n\r\n<div class=\"embed-responsive embed-responsive-16by9\" style=\"text-align:center\"><iframe allowfullscreen=\"\" frameborder=\"0\" height=\"360\" mozallowfullscreen=\"\" src=\"https://player.vimeo.com/video/1129268637\" webkitallowfullscreen=\"\" width=\"640\"></iframe></div>\r\n\r\n<p>However, Ox Security notes that arbitrary code execution is also possible in real-world attacks.</p>\r\n\r\n<p>An adversary would have multiple options to trigger the vulnerability. The researchers say that an attacker could use a malicious extension to trigger the exploit&nbsp;or inject the exploit code into documentation and tutorials.</p>\r\n\r\n<p>Hackers could also rely on classic phishing attacks or leverage poisoned repositories by planting malicious code in README files that are previewed in the IDE.</p>\r\n\r\n<div style=\"text-align:center\">\r\n<figure class=\"image\" style=\"display:inline-block\"><img alt=\"Overview of the attack\" height=\"523\" src=\"https://www.bleepstatic.com/images/news/u/1220909/2025/October/image%20(1).jpg\" width=\"900\"><figcaption><strong>Overview of the attack</strong><br><em>Source: Ox Security</em></figcaption></figure></div>\r\n\r\n<p>Ox Security notes that the exploit does not work on the latest VS Code, which is regularly updated and addresses all known bugs.</p>\r\n\r\n<p>Upon receiving the proof-of-concept exploit, Cursor dismissed the report by saying that self-inflicted DoS is out of scope.</p>\r\n\r\n<p>But the researchers noted that this stance ignores the more severe exploitation potential of the flaw, including memory-corruption primitives, or even the broader set of unpatched CVEs in the Electron apps used.</p>\r\n\r\n<p>\"Since their last Chromium update on 2025-03-21 for version 0.47.9 since Chromium 132.0.6834.210 was out, at least 94 known CVEs have been published. We've weaponized just one. The attack surface is massive,\" explains Ox Security.</p>\r\n\r\n<p>BleepingComputer has contacted both Cursor and Windsurf asking for a comment on Ox Security's report, but we have not heard back by publication time.</p>\n\n\t   \n<style>\n.ia_ad {\n    background-color: #f0f6ff;\n    width: 95%;\n    max-width: 800px;\n    margin: 15px auto;\n    border-radius: 8px;\n    border: 1px solid #d6ddee;\n    display: flex;\n    align-items: stretch;\n    padding: 0;\n    overflow: hidden;\n}\n\n.ia_lef {\n    flex: 1;\n    max-width: 200px;\n    height: auto;\n    display: flex;\n    align-items: stretch;\n}\n\n.ia_lef a {\n    display: flex;\n    width: 100%;\n    height: 100%;\n}\n\n\n.ia_lef a img {\n    width: 100%;\n    height: 100%;\n    object-fit: cover;\n    border-radius: 8px 0 0 8px;\n    margin: 0;\n    display: block;\n}\n\n.ia_rig {\n    flex: 2;\n    padding: 10px;\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n}\n\n.ia_rig h2 {\n    font-size: 17px !important;\n    font-weight: 700;\n    color: #333;\n    line-height: 1.4;\n    font-family: Georgia, \"Times New Roman\", Times, serif;\n    margin: 0 0 14px 0;\n}\n\n.ia_rig p {\n    font-weight: bold;\n    font-size: 14px;\n    margin: 0 0 clamp(6px, 2vw, 14px) 0;\n}\n\n.ia_button {\n    background-color: #FFF;\n    border: 1px solid #3b59aa;\n    color: black;\n    text-align: center;\n    text-decoration: none;\n    border-radius: 8px;\n    display: inline-block;\n    font-size: 16px;\n    font-weight: bold;\n    cursor: pointer;\n    padding: 10px 20px;\n    width: fit-content;\n}\n\n.ia_button a {\n    text-decoration: none;\n    color: inherit;\n    display: block;\n}\n\n@media (max-width: 600px) {\n    .ia_ad {\n        flex-direction: column;\n        align-items: center;\n    }\n\n    .ia_lef {\n        max-width: 100%;\n    }\n\n    .ia_lef a img {\n        border-radius: 8px 8px 0 0;\n    }\n\n\n    .ia_rig {\n        padding: 15px;\n        width: 100%;\n    }\n\n    .ia_button {\n        width: 100%;\n\tmargin: 0px auto;\n    }\n}\n</style><div class=\"ia_ad\">\n    <div class=\"ia_lef\">\n        <a href=\"https://hubs.li/Q03B5Kw_0\" target=\"_blank\" rel=\"noopener sponsored\">\n            <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" alt=\"Picus Blue Report 2025\" data-src=\"https://www.bleepstatic.com/c/p/picus/blue-report-2025.jpg\" class=\"b-lazy\"></a>\n    </div>\n    <div class=\"ia_rig\">\n        <h2><a href=\"https://hubs.li/Q03B5Kw_0\" target=\"_blank\" rel=\"noopener sponsored\">Picus Blue Report 2025 is Here: 2X increase in password cracking </a></h2>\n<p>46% of environments had passwords cracked, nearly doubling from 25% last year.</p>\n<p>Get the Picus Blue Report 2025 now for a comprehensive look at more findings on prevention, detection, and data exfiltration trends.</p>\n        <button class=\"ia_button\"><a href=\"https://hubs.li/Q03B5Kw_0\" target=\"_blank\" rel=\"noopener sponsored\">Get the Blue Report 2025</a></button>\n    </div>\n</div>\n\n           \n          <div class=\"cz-related-article-wrapp\">\n            <h3>Related Articles:</h3>\n\t     <p><a href=\"https://www.bleepingcomputer.com/news/security/rondodox-botnet-targets-56-n-day-flaws-in-worldwide-attacks/\" class=\"ras\">RondoDox botnet targets 56 n-day flaws in worldwide attacks</a></p><p><a href=\"https://www.bleepingcomputer.com/news/artificial-intelligence/opera-wants-you-to-pay-1990-per-month-for-its-new-ai-browser/\" class=\"ras\">Opera wants you to pay $19.90 per month for its new AI browser</a></p><p><a href=\"https://www.bleepingcomputer.com/news/security/google-patches-sixth-chrome-zero-day-exploited-in-attacks-this-year/\" class=\"ras\">Google patches sixth Chrome zero-day exploited in attacks this year</a></p><p><a href=\"https://www.bleepingcomputer.com/news/security/cursor-ai-editor-lets-repos-autorun-malicious-code-on-devices/\" class=\"ras\">Cursor AI editor lets repos &ldquo;autorun&rdquo; malicious code on devices</a></p><p><a href=\"https://www.bleepingcomputer.com/news/security/experimental-promptlock-ransomware-uses-ai-to-encrypt-steal-data/\" class=\"ras\">Experimental PromptLock ransomware uses AI to encrypt, steal data</a></p>\n\t  </div>\n \n\t  </div>\n         </div>\n\t</article><div class=\"cz-news-tags-wrap\">\n            <ul><li><a href=\"https://www.bleepingcomputer.com/tag/ai/\">AI</a></li>\n\n              <li><a href=\"https://www.bleepingcomputer.com/tag/chromium/\">Chromium</a></li>\n\n              <li><a href=\"https://www.bleepingcomputer.com/tag/coding/\">Coding</a></li>\n\n              <li><a href=\"https://www.bleepingcomputer.com/tag/google-chrome/\">Google Chrome</a></li>\n\n              <li><a href=\"https://www.bleepingcomputer.com/tag/ide/\">IDE</a></li>\n\n              <li><a href=\"https://www.bleepingcomputer.com/tag/llm/\">LLM</a></li>\n\n              <li><a href=\"https://www.bleepingcomputer.com/tag/n-day/\">N-day</a></li>\n\n              <li><a href=\"https://www.bleepingcomputer.com/tag/vulnerability/\">Vulnerability</a></li>\n\n            </ul></div>\n\n          <div class=\"cz-news-like-wrapp\">\n            <div class=\"addthis_toolbox addthis_default_style addthis_32x32_style\">\n             <div class=\"cz-news-like-left-area\">\n              <ul><li><a aria-label=\"Share article on Facebook\" class=\"addthis_button_facebook\"></a></li>\n               <li><a aria-label=\"Share article on Twitter\" class=\"addthis_button_twitter\"></a></li>\n               <li><a aria-label=\"Share article on LinkedIn\" class=\"addthis_button_linkedin\"></a></li>\n              </ul></div>\n             <div class=\"cz-news-like-right-area\">\n              <ul><li><a title=\"Email article\" class=\"addthis_button_email\"></a></li>\n                <li class=\"cz-lg-print-icon\"><a aria-label=\"Print Article\" title=\"Print article\" href=\"#\"></a></li>\n              </ul></div>\n            </div>\n          </div>\n\t            <div class=\"cz-full-bio-wrapp\">\n            <div class=\"cz-full-bio-img-wrapp\" title=\"Bill Toulas profile page\">\n\t\t<a style=\"background-image:url('https://www.bleepstatic.com/author/photos/42758747b8592c683aa2b2162019ddfa.jpg');\" aria-label=\"Photo of Bill Toulas\" alt-title=\"Bill Toulas profile page\" class=\"author-img\" href=\"https://www.bleepingcomputer.com/author/bill-toulas/\"></a>\n            </div>\n            <div class=\"cz-full-bio-content-wrapp\">\n              <h5><a href=\"https://www.bleepingcomputer.com/author/bill-toulas/\" target=\"_blank\">Bill Toulas</a> <span> <a href=\"mailto:bill.toulas@bleepingcomputer.com\" aria-label=\"Email bill.toulas@bleepingcomputer.com\" alt-title=\"Email bill.toulas@bleepingcomputer.com\"><i aria-hidden=\"true\" class=\"fa fa-envelope email\" title=\"Email bill.toulas@bleepingcomputer.com\"></i></a>  <a href=\"https://twitter.com/billtoulas\" target=\"_blank\" rel=\"noopener\" aria-label=\"Open Author's twitter page\" alt-title=\"Open Author's twitter page\"><i aria-hidden=\"true\" class=\"fa-brands fa-twitter twitter\" title=\"Open Author's twitter page\"></i></a></span></h5>\n              Bill Toulas is a tech writer and infosec news reporter with over a decade of experience working on various online publications, covering open-source, Linux, malware, data breach incidents, and hacks.\n            </div>\n          </div>\n\n          \n          <div class=\"cz-story-navigation\">\n            <ul><li><a href=\"https://www.bleepingcomputer.com/offer/deals/unlimited-sites-with-ionos-web-hosting-plus-3-years-for-9999/\"><i aria-hidden=\"true\" title=\"Previous story\" class=\"fa fa-chevron-left\"></i> Previous Article </a></li>\n\n              <li><a href=\"https://www.bleepingcomputer.com/news/security/cisa-confirms-hackers-exploited-oracle-e-business-suite-ssrf-flaw/\">Next Article <i aria-hidden=\"true\" title=\"Next story\" class=\"fa fa-chevron-right\"></i></a></li>\n\n            </ul></div>\n\n          \n           <div class=\"cz-newz-comment-wrapp\" id=\"comments\">\n            <h3>Comments</h3>\n            <ul><li id=\"cid37435\" itemscope itemtype=\"https://schema.org/UserComments\">\n                <div class=\"cz-newz-comment-inner-wrappper\">\n                  <div class=\"cz-newz-comment-img-wrappper\"> <img alt=\"fromFirefoxToVivaldi Photo\" src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" data-src=\"https://www.bleepingcomputer.com/forums/public/style_images/master/profile/default_large.png\" class=\"b-lazy\"></div>\n                  <div class=\"cz-newz-comment-content-wrappper\">\n                    <div class=\"cz-newz-comment-title-wrapp\">\n                      <div class=\"cz-newz-title-left-area\">\n                        <data itemprop=\"name\" content=\"fromFirefoxToVivaldi\"></data><data itemprop=\"commentTime\" content=\"2025-10-21T03:45\"></data><h6>\n                        <a href=\"https://www.bleepingcomputer.com/forums/u/1135227/fromfirefoxtovivaldi/\" target=\"_blank\">fromFirefoxToVivaldi</a> <span> -  20 hours ago</span> </h6></div>\n                      <div class=\"cz-newz-title-right-area\">\n                        <ul><li><a class=\"cz-news-report cz-comment-report-btn\" aria-label=\"Report comment\" href=\"#\" title=\"Report\" data-id=\"37435\">&nbsp;</a></li>\n                          <li><a class=\"cz-news-link\" href=\"#cid37435\" title=\"Link\">&nbsp;</a></li>\n\n                        </ul></div>\n                    </div>\n                    <p id=\"comment_html_37435\" itemprop=\"commentText\">I wonder what's the status for Steam's built-in browser. I have not seen them updating if after chromium updates, but maybe it happens purely in the background.</p>\n                  </div>\n                </div>\n              </li>\n\n\n            </ul></div>\n          \n          <div class=\"cz-post-comment-wrapp\" id=\"comment_form\">\n       \t    <h5>Post a Comment <span><a href=\"https://www.bleepingcomputer.com/posting-guidelines/\" target=\"_blank\">Community Rules</a></span></h5>\n            <div class=\"cz-comment-loggin-wrapp\">\n              \t<h6>You need to login in order to post a comment</h6>\n                <input type=\"submit\" value=\"Login\" class=\"bc_login_btn cz-green-bttn\"><p>Not a member yet? <a href=\"https://www.bleepingcomputer.com/forums/index.php?app=core&amp;module=global&amp;section=register\">Register Now</a></p>\n              </div>\n          </div>\n\n                    <div class=\"cz-related-article-wrapp\">\n            <h3>You may also like:</h3>\n<script async src=\"//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js\"></script><ins class=\"adsbygoogle\" style=\"display:block\" data-ad-format=\"autorelaxed\" data-ad-client=\"ca-pub-0920899300397823\" data-ad-slot=\"4359266829\"></ins>\n<script>\n     (adsbygoogle = window.adsbygoogle || []).push({});\n</script></div>\n\n        </div>\n      </div>\n      \n      <!--  side bar section    -->    \n      <div class=\"col-md-4 bc_right_sidebar\">\n       \n       \n\t\n\t\n\t\n\t<div class=\"s-ou-wrap\">\n \n<div align=\"center\">\n <a href=\"https://www.threatlocker.com/stop-ransomware-before-it-starts?utm_source=bleeping_computer&utm_medium=sponsor&utm_campaign=not-all-allowlisting_q4_25&utm_content=not-all-allowlisting-400x250&utm_term=display\" rel=\"nofollow noopener\" target=\"_blank\"><img src=\"https://www.bleepstatic.com/c/t/threatlocker/ThreatLocker-Not-All-Allowlisting-400-500.jpg\" alt=\"ThreatLocker\" width=\"100%\" height=\"auto\"></a>\n</div>\n\n</div>\n\t\n\t\n\t\n\t\n\t                <div id=\"pop_stories\">\n                        <div class=\"cz-line-heading\"><div class=\"cz-line-heading-inner\">Popular Stories</div></div>\n                    <ul>\n                        \n                        <li>\n                            <a class=\"pns\" href=\"https://www.bleepingcomputer.com/news/technology/aws-outage-crashes-amazon-prime-video-fortnite-perplexity-and-more/\">\n                             <div class=\"bc_pop_story_img)\">                                 \n                              <img class=\"b-lazy\" alt=\"Amazon\" src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" data-src=\"https://www.bleepstatic.com/content/hl-images/2024/10/15/thumb/292x176_amazon-logo.jpg\">\n                             </div>\n                             <p>AWS outage crashes Amazon, Prime Video, Fortnite, Perplexity and more</p>\n                            </a>\n                        </li>\n\n                        <li>\n                            <a class=\"pns\" href=\"https://www.bleepingcomputer.com/news/security/cisa-high-severity-windows-smb-flaw-now-exploited-in-attacks/\">\n                             <div class=\"bc_pop_story_img)\">                                 \n                              <img class=\"b-lazy\" alt=\"Windows\" src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" data-src=\"https://www.bleepstatic.com/content/hl-images/2025/10/20/thumb/292x176_Windows-headpic.jpg\">\n                             </div>\n                             <p>CISA: High-severity Windows SMB flaw now exploited in attacks</p>\n                            </a>\n                        </li>\n\n                        <li>\n                            <a class=\"pns\" href=\"https://www.bleepingcomputer.com/news/security/tiktok-videos-continue-to-push-infostealers-in-clickfix-attacks/\">\n                             <div class=\"bc_pop_story_img)\">                                 \n                              <img class=\"b-lazy\" alt=\"TikTok\" src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" data-src=\"https://www.bleepstatic.com/content/hl-images/2022/08/31/thumb/292x176_TikTok.jpg\">\n                             </div>\n                             <p>TikTok videos continue to push infostealers in ClickFix attacks</p>\n                            </a>\n                        </li>\n\n                    </ul>\n                </div>\n        <div class=\"s-ou-wrap\">\n \n<div align=\"center\" data-freestar-ad=\"__300x250 __300x600\" id=\"bleepingcomputer_300x250_300x600_160x600_Right_2\">\n<script data-cfasync=\"false\" type=\"text/javascript\">\n    freestar.config.enabled_slots.push({ placementName: \"bleepingcomputer_300x250_300x600_160x600_Right_2\", slotId: \"bleepingcomputer_300x250_300x600_160x600_Right_2\" });\n</script>\n</div>\n\n</div>\n\t\n                <div class=\"bc_guide\">\n                    <div class=\"cz-line-heading\"><div class=\"cz-line-heading-inner\">Sponsor Posts</div></div>\n                    <ul style=\"padding-top:5px;\">\n                     \n                        <li>\n                                <a class=\"spon_res\" href=\"https://www.huntress.com/itdr-free-trial?utm_source=bleepingcomputer&utm_medium=article&utm_campaign=cy25-10-camp-itdr-global-prospect-all-x-identity_security_assessment\" target=\"_blank\" rel=\"sponsored noopener\">\n                                <div class=\"bc_guide_img\">\n                                        <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/images/news/security/h/huntress-labs/hidden-threats-microsoft-365/huntress-sidebar.png\" alt=\"Abuse our assessment. Get an Identity Security Assessment. Worst case? We find something.\">\n                                </div>\n                                <div class=\"bc_guide_text\">\n                                  <p>Abuse our assessment. Get an Identity Security Assessment. Worst case? We find something.</p>\n                                </div>\n                            </a>\n                        </li>\n\n                        <li>\n                                <a class=\"spon_res\" href=\"https://nordlayer.com/?utm_source=PR&utm_medium=article&utm_campaign=Bleeping_computer_main\" target=\"_blank\" rel=\"sponsored noopener\">\n                                <div class=\"bc_guide_img\">\n                                        <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/content/posts/2025/10/16/thumb/100x82_nordlayer-header.jpg\" alt=\"Ready to own your network security? Take control today – learn more.\">\n                                </div>\n                                <div class=\"bc_guide_text\">\n                                  <p>Ready to own your network security? Take control today – learn more.</p>\n                                </div>\n                            </a>\n                        </li>\n\n                        <li>\n                                <a class=\"spon_res\" href=\"https://www.pentasecurity.com/?utm_source=article&utm_medium=bleepingcomputer&utm_campaign=d_artcle_2510\" target=\"_blank\" rel=\"sponsored noopener\">\n                                <div class=\"bc_guide_img\">\n                                        <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/content/posts/2025/10/21/thumb/100x82_penta-header.png\" alt=\"Insider threats happen. Keep your data safe with D.AMO encryption\">\n                                </div>\n                                <div class=\"bc_guide_text\">\n                                  <p>Insider threats happen. Keep your data safe with D.AMO encryption</p>\n                                </div>\n                            </a>\n                        </li>\n\n                        <li>\n                                <a class=\"spon_res\" href=\"https://www.vmug.com/membership/vmug-advantage-membership?utm_source=article&utm_medium=webpage&utm_campaign=bleepingcomputer5&utm_content=bleepingcomputer\" target=\"_blank\" rel=\"sponsored noopener\">\n                                <div class=\"bc_guide_img\">\n                                        <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/content/posts/2025/10/15/thumb/100x82_vmug-header-image.jpg\" alt=\"Get certified, get connected, and get 10% off your VMUG Advantage membership with code ADVNOW.\">\n                                </div>\n                                <div class=\"bc_guide_text\">\n                                  <p>Get certified, get connected, and get 10% off your VMUG Advantage membership with code ADVNOW.</p>\n                                </div>\n                            </a>\n                        </li>\n\n                        <li>\n                                <a class=\"spon_res\" href=\"https://hubs.li/Q03MVLDq0\" target=\"_blank\" rel=\"sponsored noopener\">\n                                <div class=\"bc_guide_img\">\n                                        <img src=\"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\" class=\"b-lazy\" data-src=\"https://www.bleepstatic.com/content/posts/2025/10/thumb/100x82_picus-header.png\" alt=\"Turn exposure data into evidence. Validate, prioritize, and fix what matters with Picus.\">\n                                </div>\n                                <div class=\"bc_guide_text\">\n                                  <p>Turn exposure data into evidence. Validate, prioritize, and fix what matters with Picus.</p>\n                                </div>\n                            </a>\n                        </li>\n\n                    </ul>\n                </div>\n\n\n\t\n\t\n\t\n        \n\t\n        \n\t\n        <div class=\"s-ou-wrap\" id=\"pinned\">\n \n<div align=\"center\" data-freestar-ad=\"__300x250 __300x600\" id=\"bleepingcomputer_300x250_300x600_160x600_Right_3\">\n<script data-cfasync=\"false\" type=\"text/javascript\">\n    freestar.config.enabled_slots.push({ placementName: \"bleepingcomputer_300x250_300x600_160x600_Right_3\", slotId: \"bleepingcomputer_300x250_300x600_160x600_Right_3\" });\n</script>\n</div>\n\n</div>\n      </div>\n    </div>\n  </div>\n</section>\n\n<!-- End Content Section --> \n<section class=\"cz-boa-wrapp\">\n <div class=\"container\">\n  <div class=\"row\">\n   <div class=\"col-md-12\">\n    \n<div align=\"center\" data-freestar-ad=\"__300x50 __970x250\" id=\"bleepingcomputer_728x90_970x90_970x250_320x50_BTF\">\n<script data-cfasync=\"false\" type=\"text/javascript\">\n    freestar.config.enabled_slots.push({ placementName: \"bleepingcomputer_728x90_970x90_970x250_320x50_BTF\", slotId: \"bleepingcomputer_728x90_970x90_970x250_320x50_BTF\" });\n</script>\n</div>\n\n   </div>\n  </div>\n </div>\n</section>\n<!-- Start Footer Section -->\n\n<footer id=\"footer\">\n\t<div class=\"container\">\n    \t<div class=\"row\">\n        \t<div class=\"col-md-4\">\n\t\t\n                \n\t\t<h5>Follow us:</h5>\n                <ul class=\"bc_social_icons\">\n                    <li><a href=\"https://www.facebook.com/BleepingComputer\" aria-label=\"Visit BleepingComputer's Facebook page\"><span aria-hidden=\"true\" class=\"fa-brands fa-facebook-f\"></span></a></li>\n                    <li><a href=\"https://twitter.com/BleepinComputer\" aria-label=\"Visit BleepingComputer's Twitter page\"><span aria-hidden=\"true\" class=\"fa-brands fa-twitter\"></span></a></li>\n                    <li><a href=\"https://infosec.exchange/@BleepingComputer\" aria-label=\"Visit BleepingComputer's Mastodon profile\"><span aria-hidden=\"true\" title=\"BleepingComputer Mastodon profile\" class=\"fa-brands fa-mastodon\"></span></a></li>\n                    <li><a href=\"https://www.youtube.com/user/BleepingComputer\" aria-label=\"Visit BleepingComputer's YouTube page\"><span aria-hidden=\"true\" class=\"fa-brands fa-youtube\"></span></a></li>\n                    <li><a href=\"https://www.bleepingcomputer.com/feed/\" aria-label=\"BleepingComputer's RSS Feeds\"><span aria-hidden=\"true\" class=\"fa fa-rss\"></span></a></li>\n                </ul>\n\n            </div>\n            <div class=\"col-md-2\">\n            \t<h5>Main Sections</h5>\n                <ul>\n\t\t    <li><a href=\"https://www.bleepingcomputer.com/\">News</a></li>\n                    <li><a href=\"https://www.bleepingcomputer.com/vpn/\">VPN Buyer Guides</a></li>\n                    <li><a href=\"https://www.bleepingcomputer.com/sysadmin/\">SysAdmin Software Guides</a></li>\t\t\t\n                    <li><a href=\"https://www.bleepingcomputer.com/download/\">Downloads</a></li>\n                    <li><a href=\"https://www.bleepingcomputer.com/virus-removal/\">Virus Removal Guides</a></li>\n                    <li><a href=\"https://www.bleepingcomputer.com/tutorials/\">Tutorials</a></li>\n                    <li><a href=\"https://www.bleepingcomputer.com/startups/\">Startup Database</a></li>\n                    <li><a href=\"https://www.bleepingcomputer.com/uninstall/\">Uninstall Database</a></li>\n                    <li><a href=\"https://www.bleepingcomputer.com/glossary/\">Glossary</a></li>\n                </ul>\n            </div>\n            <div class=\"col-md-2\">\n            \t<h5>Community</h5>\n                <ul>\n                  <li><a href=\"https://www.bleepingcomputer.com/forums/\">Forums</a></li>\n\t   \t  <li><a href=\"https://www.bleepingcomputer.com/forum-rules/\">Forum Rules</a></li>\n                  <li><a href=\"https://www.bleepingcomputer.com/forums/t/730914/the-bleepingcomputer-official-discord-chat-server-come-join-the-fun/\">Chat</a></li>\n                </ul>\n            </div>\n            <div class=\"col-md-2\">\n            \t<h5>Useful Resources</h5>\n                <ul>\n                    <li><a href=\"https://www.bleepingcomputer.com/welcome-guide/\">Welcome Guide</a></li>\n\t\t    <li><a href=\"https://www.bleepingcomputer.com/sitemap/\">Sitemap</a></li>\n                </ul>\n            </div>\n            <div class=\"col-md-2\">\n            \t<h5>Company</h5>\n                <ul>\n                    <li><a href=\"https://www.bleepingcomputer.com/about/\">About BleepingComputer</a></li>\n                    <li><a href=\"https://www.bleepingcomputer.com/contact/\">Contact Us</a></li>\n\t\t    <li><a href=\"https://www.bleepingcomputer.com/news-tip/\">Send us a Tip!</a></li>\n                    <li><a href=\"https://www.bleepingcomputer.com/advertise/\">Advertising</a></li>\n\t\t    <li><a href=\"https://www.bleepingcomputer.com/write-for-bleepingcomputer/\">Write for BleepingComputer</a></li>\n                    <li><a href=\"https://www.bleepingcomputer.com/rss-feeds/\">Social & Feeds</a></li>\n\t\t    <li><a href=\"https://www.bleepingcomputer.com/changelog/\">Changelog</a></li>\n                </ul>\n            </div>\n        </div>\n    </div>\n    <div class=\"bc_footer_bottom\">\n    \t<div class=\"container\">\n        \t<div class=\"row\">\n            \t<div class=\"col-md-6\">\n                \t <p><a href=\"https://www.bleepingcomputer.com/terms-of-use/\">Terms of Use</a>  - <a href=\"https://www.bleepingcomputer.com/privacy/\"> Privacy Policy</a> - <a href=\"https://www.bleepingcomputer.com/ethics-statement/\">Ethics Statement</a> - <a href=\"https://www.bleepingcomputer.com/affiliate-disclosure/\">Affiliate Disclosure</a></p>\n                </div>\n                <div class=\"col-md-6 bc_copyright\">\n                \t<p>Copyright @ 2003 - 2025 <a href=\"https://www.bleepingcomputer.com/\"> Bleeping Computer<sup>&reg;</sup> LLC </a> -   All Rights Reserved</p>\n                </div>\n            </div>\n        </div>\n    </div>\n</footer>\n</div>\n<!-- End Footer Section -->\n\n<!-- Start Go to top Section -->\n\n<div class=\"bc_goto_top\">\n    <a href=\"#\" title=\"Back to Top\"><i aria-hidden=\"true\" class=\"fa fa-chevron-up\"></i></a>\n</div> \n    \n<!-- End Go to top Section -->\n\n\n<!-- Start Popup Section -->\n\n<div class=\"bc_popup\" aria-modal=\"true\" aria-label=\"Login form\">\n\t<div class=\"bc_login_form\">\n    \t<a class=\"bc_popup_close\" href=\"javascript:;\" aria-label=\"Close login form\" title=\"Close\"></a>\n        <h4>Login</h4>\n        <form action=\"https://www.bleepingcomputer.com/forums/index.php?app=core&amp;module=global&amp;section=login&amp;do=process&amp;return=https://www.bleepingcomputer.com/news/security/cursor-windsurf-ides-riddled-with-94-plus-n-day-chromium-vulnerabilities/\" method=\"post\">\n            <div class=\"bc_form_feild\">\n                <label for=\"ips_username\">Username</label>\n                <input aria-label=\"Enter login name\" title=\"Enter login name\" type=\"text\" id=\"ips_username\" name=\"ips_username\" spellcheck=\"false\" autocomplete=\"username\"> \n            </div>\n            <div class=\"bc_form_feild\">\n                <label for=\"ips_password\">Password</label>\n                <input aria-label=\"Enter login password\" title=\"Enter login passwod\" type=\"password\" id=\"ips_password\" name=\"ips_password\" spellcheck=\"false\" autocomplete=\"current-password\">\n            </div>\n            <div class=\"bc_form_feild\">\n\t     <div class=\"bc_remember\">\n\t      <input id=\"remember\" type=\"checkbox\" name=\"rememberMe\" value=\"1\" checked=\"checked\">\n\t      <label for=\"remember\">Remember Me</label>\n\t     </div>\n\t     <div class=\"bc_anon\">\n\t      <input  id=\"anonymous\" type=\"checkbox\" name=\"anonymous\" value=\"1\">\n\t      <label for=\"anonymous\">Sign in anonymously</label>\n\t     </div>\n            </div>\n            <div class=\"bc_btn_wrap\">\n\t\t<input type='hidden' name='auth_key' value='880ea6a14ea49e853634fbdc5015a024' />\n                <input type=\"submit\" aria-label=\"Login to site\" title=\"Login\" value=\"Login\" class=\"bc_sub_btn\">\n                <a aria-label=\"Sign in with Twitter\" href=\"https://www.bleepingcomputer.com/forums/index.php?app=core&amp;module=global&amp;section=login&amp;serviceClick=twitter&amp;return=https://www.bleepingcomputer.com/news/security/cursor-windsurf-ides-riddled-with-94-plus-n-day-chromium-vulnerabilities/\" class=\"bc_twitter_btn\"><img src=\"https://www.bleepstatic.com/images/site/login/twitter.png\" width=\"28\" height=\"24\" alt=\"Sign in with Twitter button\"> Sign in with Twitter</a>\n\t\t<hr />\n                <p>Not a member yet? <a aria-label=\"Register account\" title=\"Register account\" href=\"https://www.bleepingcomputer.com/forums/index.php?app=core&module=global&section=register\">Register Now</a></p>\n            </div>\n        </form>\n    </div>\n</div>\n\n<!-- End Popup Section -->\n    \n\n<!-- Script -->\n<script async type=\"text/javascript\" src=\"https://www.bleepstatic.com/js/redesign/bootstrap/js/bootstrap.js\"></script>\n<script src=\"https://www.bleepstatic.com/js/blazy/blazy.min.js\"></script>\n<script type=\"text/javascript\" async src=\"https://www.bleepstatic.com/js/redesign/bleep.js\"></script>\n\n<script type=\"text/javascript\" async defer src=\"https://www.bleepstatic.com/js/redesign/fancybox/jquery.fancybox.js\"></script>\n<script type=\"text/jscript\">\n$(document).ready(function(e) {\n    $('.articleBody img').not('a>img').not('.contrib_but>img').click(function(e) {\n        e.preventDefault();\n                 $.fancybox({'href' : $(this).attr('src')});\n    });\n});\n</script>\n\n<script src=\"//www.bleepstatic.com/js/fixto/fixto.min.js\"></script>\n\n<script type=\"text/javascript\">\n$(document).ready(function(){\n\nvar content = $('.cz-main-left-section');\nvar sidebar = $('.bc_right_sidebar');\nvar count = 0;\nvar myTimer;\n\nfunction setEqualContainer() {\n        var getContentHeight = content.outerHeight();\n        var getSidebarHeight = sidebar.outerHeight();\n\n        if ( getContentHeight > getSidebarHeight ) {\n                sidebar.css('min-height', getContentHeight);\n        }\n\n        if ( getSidebarHeight > getContentHeight ) {\n                content.css('min-height', getSidebarHeight);\n        }\n}\n\n// creating the timer which will run every 500 milliseconds\n// and will stop after the container will be loaded\n// ...or after 15 seconds to not eat a lot of memory\n\nmyTimer = setInterval( function() {\n        count++;\n\n        if ( $('.testContainer').length == 0 ) {\n                setEqualContainer();\n        } else {\n                setEqualContainer();\n                clearInterval(myTimer);\n        }\n\n        if ( count == 15) {\n                clearInterval(myTimer);\n        }\n}, 500);\n\n        $('#pinned').fixTo('.bc_right_sidebar', {\n\t\t top: 25,\n                 bottom: 25,\n        });\n\n        $('#more_dd').click(function (e) {\n          e.preventDefault()\n        });\n\n        $('.bc_goto_top a').click(function(){\n        $(\"html, body\").animate({ scrollTop: 0 }, 600);\n        return false;\n        });\n        jQuery('.bc_login_btn').on('click', function() {\n    jQuery('.bc_popup').fadeIn(\"slow\");\n  });\n        jQuery('.bc_popup_close').on('click', function() {\n    jQuery('.bc_popup').fadeOut(\"slow\");\n  });\n\n});\n</script>\n<script type=\"text/javascript\">\n// validate comment box not empty\nfunction validate_comment_box_not_empty()\n{\n\t$('#frm_comment_box').submit(function(e) {\n\t\tif($('#comment_html_box').val().length==0)\n\t\t{\n\t\t\talert(\"Please enter a comment before pressing submit\");\n\t\t\treturn false;\n\t\t}\n\t\telse\n\t\t{\n\t\t\treturn true;\n\t\t}\n\t});\n}\n\nfunction cz_strip_tags(input, allowed) {\n  allowed = (((allowed || '') + '')\n    .toLowerCase()\n    .match(/<[a-z][a-z0-9]*>/g) || [])\n    .join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)\n  var tags = /<\\/?([a-z][a-z0-9]*)\\b[^>]*>/gi,\n    commentsAndPhpTags = /<!--[\\s\\S]*?-->|<\\?(?:php)?[\\s\\S]*?\\?>/gi;\n  return input.replace(commentsAndPhpTags, '')\n    .replace(tags, function($0, $1) {\n      return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';\n    });\n}\nfunction cz_br2nl(str) {\n\tvar regex = /<br\\s*[\\/]?>/gi;\n    //var pure_str = str.replace(regex,\"\\n\");\n    var pure_str = str.replace(regex,\"\");\n    return cz_strip_tags(pure_str,'');\n}\n$(document).ready(function(e) {\n// validate comment box not empty\nvalidate_comment_box_not_empty();\n\n// report comment\n$('#comment-report-other-reason-wrap').css('display','none');\n$('.cz-popup-close').click(function(e) {\n    e.preventDefault();\n        $('.cz-popup').fadeOut(\"slow\");\n});\n$('.cz-comment-report-btn').click(function(e) {\n    e.preventDefault();\n        $('.cz-popup').css('height',$( document ).height()+'px');\n    //var comment_box_report_top = $(this).offset().top;\n        var comment_box_report_top = $(document).scrollTop();\n        $('.cz-popup-wrapp').css('top',(comment_box_report_top+100)+'px');\n        $('#comment-id-report').val($(this).attr('data-id'));\n        $('.cz-popup').fadeIn(\"slow\");\n});\n$(\"input[type='radio'][name='comment-report-reason']\").click(function(e) {\n    if($(this).val()=='Other')\n        {\n                $('#comment-report-other-reason-wrap').css('display','block');\n        }\n        else\n        {\n                $('#comment-report-other-reason-wrap').css('display','none');\n        }\n});\n$('.comment-report-submit-btn').click(function(e) {\n    e.preventDefault();\n        var comment_report_reason = \"\";\n        var comment_report_reason = $(\"input[type='radio'][name='comment-report-reason']:checked\").val();\n        if (comment_report_reason=='Other') {\n                comment_report_reason = $('#comment-report-other-reason').val();\n        }\n        if(comment_report_reason=='') {\n                alert('Please specify reason');\n        }\n        else\n        {\n                $('.cz-popup-report-submiting').css('display','inline-block');\n                $.ajax({\n                \n                 type: \"POST\",\n                 url: 'https://www.bleepingcomputer.com/report-comment/',\n                 data: { comment_id: $('#comment-id-report').val(), reason: comment_report_reason },\n                 success: function(data) {\n                          $('.cz-popup-report-submiting').css('display','none');\n                          $('.cz-popup').fadeOut(\"slow\");\n                 }\n                \n                });\n        }\n});\n// report comment\n\n    $('.cz_comment_reply_btn').click(function(e) {\n        e.preventDefault();\n  $('#parent_comment_id').val($(this).attr('data-id'));\n  $('#comment_html_box').attr('placeholder','Replying to '+$(this).attr('data-name'));\n  var comment_box_top = $('.cz-post-comment-wrapp').offset().top;\n  $(\"html, body\").animate({ scrollTop: comment_box_top-100 }, 600);\n  $('#comment_html_box').focus();\n    });\n    $('.cz_comment_quote_btn').click(function(e) {\n        e.preventDefault();\n        var quote_comment_html ='';\n        if($(this).attr('data-id')!=undefined && $(this).attr('data-id')!='')\n        {\n  $('#parent_comment_id').val($(this).attr('data-id'));\n  quote_comment_html = $('#comment_html_'+$(this).attr('data-id')).html();\n  }\n  quote_comment_html = cz_br2nl(quote_comment_html);\n  $('#comment_html_box').val('\"'+quote_comment_html+'\"\\n\\n');\n  var comment_box_top = $('.cz-post-comment-wrapp').offset().top;\n  $(\"html, body\").animate({ scrollTop: comment_box_top-100 }, 600);\n  $('#comment_html_box').focus();\n    });\n \n});\n\nfunction editForm(cid)\n{\n\n   $.ajax({\n\n     type: \"GET\",\n     url: window.location.href+\"?sa=1\",\n     data: { f: \"e\", cid: cid },\n     success: function(data) {\n          $('.cz-post-comment-wrapp').html(data);\n\t\t  validate_comment_box_not_empty();\n     }\n\n   });\n\n   var comment_box_top = $('.cz-post-comment-wrapp').offset().top;\n   $(\"html, body\").animate({ scrollTop: comment_box_top-100 }, 600);\n\n}\n\n$(document).on('click', '.cz-subscribe-button' , function(e) {\n    e.preventDefault();\n                \n    $.ajax({\n              \n    \ttype: \"POST\",\n        url: window.location.href,\n        data: { a: 'sub' },\n        success: function(data) {\n        if(data == '1')\n        \t$( \"li.cz-subscribe-button\" ).replaceWith( '<li aria-label=\"Unsubscribe from comments\" title=\"Unsubscribe from comments\" class=\"cz-unsubscribe-button\"><a href=\"#\"></a></li>');\n        }\n                \n    });\n});\n\n$(document).on('click', '.cz-unsubscribe-button' , function(e) {\n    e.preventDefault();\n                \n    $.ajax({\n               \n         type: \"POST\",\n       \t url: window.location.href,\n         data: { a: 'unsub' },\n         success: function(data) {\n    \t if(data == '1')\n         \t$( \"li.cz-unsubscribe-button\" ).replaceWith( '<li aria-label=\"Subscribe to comments\" title=\"Subscribe to comments\" class=\"cz-subscribe-button\"><a href=\"#\"></a></li>');\n         }\n               \n    });\n\n});\n</script>\n\n<script type=\"text/javascript\">\n$('.cz-print-icon, .cz-lg-print-icon').click(function(e) {\n    e.preventDefault();\n    var divToPrint = document.getElementById('.article_section'); \n    var mywindow = window.open('','','left=0,top=0,width=950,height=600,toolbar=0,scrollbars=0,status=0,addressbar=0');\n\n    var is_chrome = Boolean(mywindow.chrome);\n    mywindow.document.write($( \".article_section\" ).html());\n    mywindow.document.close(); // necessary for IE >= 10 and necessary before onload for chrome\n\n    if (is_chrome) {\n        mywindow.onload = function() { // wait until all resources loaded \n            mywindow.focus(); // necessary for IE >= 10\n            mywindow.print();  // change window to mywindow\n            mywindow.close();// change window to mywindow\n        };\n    }\n    else {\n        mywindow.document.close(); // necessary for IE >= 10\n        mywindow.focus(); // necessary for IE >= 10\n        mywindow.print();\n        mywindow.close();\n    }\n\n    return true;\n});\n</script>\n\n<script type=\"text/javascript\">\n\nvar loginhash = '880ea6a14ea49e853634fbdc5015a024';\nvar main_nav_hide_flag = true;\nvar scrollTop =0;\nvar main_nav_hide_timer = '';\n\nfunction call_main_nav_hide()\n{\n if(main_nav_hide_flag && scrollTop >=100)\n {\n  $('header').addClass(\"nav-up\");\n }\n}\nvar cz_header_pos = $('header').offset().top;\n$(window).scroll(function() {\n\t$('header').each(function(){\n\tvar cz_top_of_window = $(window).scrollTop()-100;\n\t\tif (cz_top_of_window > cz_header_pos) {\t\t\t\n\t\t\t$('.bc_goto_top').fadeIn(\"slow\");\n\t\t} else {\n\t\t\t$('.bc_goto_top').fadeOut(\"slow\");\t\t\t\n\t\t}\n\t});\n\n});\nvar prevScrollTop = 0;\n$(window).scroll(function(event){\n    scrollTop = $(this).scrollTop();\n\n    if ( scrollTop < 0 ) {\n        scrollTop = 0;\n    }\n    if ( scrollTop > $('body').height() - $(window).height() ) {\n        scrollTop = $('body').height() - $(window).height();\n    }\n\n    if (scrollTop >= prevScrollTop && scrollTop) {\n        $('header').addClass(\"nav-up\");\n    } else {\n\tif (scrollTop >=100)\n\t{\n\t $('header').removeClass(\"nav-up\"); \n\t main_nav_hide_timer = setTimeout(\"call_main_nav_hide()\",5000);\n\t}\n\telse\n\t{\n\t $('header').removeClass(\"nav-up\");\n\t clearInterval(main_nav_hide_timer);\n\t}\n    }\n\n    prevScrollTop = scrollTop;\n});\n$(document).ready(function(){\t\n var bLazy = new Blazy();\n\n $(\".bc_dropdown a\").mouseenter(function(e) {\n  $(this).parent('.bc_dropdown').delay(250).queue(function(){\n      $(this).addClass('show_menu').dequeue();\n       bLazy.revalidate();\n  });\n  main_nav_hide_flag = false;\n });\n $(\".bc_dropdown\").mouseleave(function(e) {\n  $(\".bc_dropdown\").clearQueue().stop().removeClass('show_menu');\n  main_nav_hide_flag = true;\n  if (scrollTop >=100)\n  {\n   main_nav_hide_timer = setTimeout(\"call_main_nav_hide()\",5000);\n  }\n });\n $('.bc_dropdown a').each(function(){\n         if($(this).is(\":hover\"))\n         {\n                 $(this).mouseenter();\n         }\n });\n$('#bc_drop_tab a').hover(function (e) {\n  e.preventDefault()\n  $(this).tab('show')\n  bLazy.revalidate();\n});\n\n\t$('#more_dd').click(function (e) {\n\t  e.preventDefault()\n\t});\n\n\t$('.bc_goto_top a').click(function(){\n\t$(\"html, body\").animate({ scrollTop: 0 }, 600);\n\treturn false;\n\t});\n\tjQuery('.bc_login_btn').on('click', function() { \n\t    jQuery('.bc_popup').fadeIn(\"slow\");\n\t    $('#ips_username').focus();\n        });\n\tjQuery('.bc_popup_close').on('click', function() {\n    jQuery('.bc_popup').fadeOut(\"slow\");\n  });\n  \n});\n\n$(document).mouseup(function (e)\n{\n    var container = $(\".bc_login_form\");\n\n    if (!container.is(e.target) // if the target of the click isn't the container...\n        && container.has(e.target).length === 0 && $('.bc_popup').css('display') =='block') // ... nor a descendant of the container\n    {\n        jQuery('.bc_popup').fadeOut(\"slow\");\n    }\n});\nif($(window).width() < 767)\n{ \n\t$(\".nav-menu\").on('click','li', function(){\n\t$(this).toggleClass('active').siblings().removeClass('active');\n\n })\n}\n</script>\n\n<section class=\"cz-popup\">\n  <div class=\"cz-popup-wrapp\"> \n  <a class=\"cz-popup-close\" href=\"javascript:;\" title=\"Close\"> <i aria-hidden=\"true\" title=\"Times reported\" class=\"fa fa-times\"></i> </a>\n    <h4>Reporter</h4>\n    <div class=\"cz-popup-inner-wrapp\">\n     <h6>Help us understand the problem. What is going on with this comment?</h6>\n        <form>\n          <input type=\"hidden\" id=\"comment-id-report\" value=\"0\">\n         <ul>\n             <li>\n                 <label><input type=\"radio\" name=\"comment-report-reason\" value=\"Spam\">Spam</label>\n                </li>\n             <li>\n                 <label><input type=\"radio\" name=\"comment-report-reason\" value=\"Abusive or Harmful\">Abusive or Harmful</label>\n                </li>\n             <li>\n                 <label><input type=\"radio\" name=\"comment-report-reason\" value=\"Inappropriate content\">Inappropriate content</label>\n                </li>\n             <li>\n                 <label><input type=\"radio\" name=\"comment-report-reason\" value=\"Strong language\">Strong language</label>\n                </li>\n             <li>\n                 <label><input type=\"radio\" name=\"comment-report-reason\" value=\"Other\">Other</label>\n                </li>\n                <li id=\"comment-report-other-reason-wrap\" style=\"display:none;\">\n                 <textarea aria-label=\"Enter other reason for reporting the comment\" rows=\"2\" cols=\"2\" id=\"comment-report-other-reason\"></textarea>\n                </li>\n            </ul>\n            <p>Read our <a href=\"https://www.bleepingcomputer.com/posting-guidelines/\">posting guidelinese</a> to learn what content is prohibited.</p>\n        </form>\n    </div>\n    <div class=\"cz-popup-bottom-wrapp\">\n    <div class=\"cz-popup-report-submiting\" style=\"display:none;\">Submitting...</div>\n     <a href=\"#\" title=\"Submit\" class=\"cz-next-btn comment-report-submit-btn\">SUBMIT</a>\n    </div>\n  </div>\n</section>\n\n    <noscript id=\"deferred-styles\">\n        \n<link rel=\"stylesheet\" href=\"https://www.bleepstatic.com/js/redesign/fancybox/jquery.fancybox.css\" type=\"text/css\" media=\"screen\" />\n        <link href=\"https://www.bleepstatic.com/redesign/fontawesome6/css/fontawesome.min.css\" rel=\"stylesheet\" type=\"text/css\" media=\"all\">\n        <link href=\"https://www.bleepstatic.com/redesign/fontawesome6/css/brands.min.css\" rel=\"stylesheet\" type=\"text/css\" media=\"all\">\n        <link href=\"https://www.bleepstatic.com/redesign/fontawesome6/css/solid.min.css\" rel=\"stylesheet\" type=\"text/css\" media=\"all\">\n    </noscript>\n    <script>\n      var loadDeferredStyles = function() {\n        var addStylesNode = document.getElementById(\"deferred-styles\");\n        var replacement = document.createElement(\"div\");\n        replacement.innerHTML = addStylesNode.textContent;\n        document.body.appendChild(replacement)\n        addStylesNode.parentElement.removeChild(addStylesNode);\n      };\n      var raf = requestAnimationFrame || mozRequestAnimationFrame ||\n          webkitRequestAnimationFrame || msRequestAnimationFrame;\n      if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });\n      else window.addEventListener('load', loadDeferredStyles);\n    </script>\n\n\n</body>\n</html>"
+        }
+      }
+    ],
+    "Code in JavaScript": [
+      {
+        "json": {
+          "content": "Cursor, Windsurf IDEs riddled with 94+ n-day Chromium vulnerabilities News Featured Latest Hackers exploit 34 zero-days on first day of Pwn2Own Ireland Russian hackers evolve malware pushed in \"I am not a robot\" captchas Windows 11 KB5070773 emergency update fixes Windows Recovery issues Over 75,000 WatchGuard security devices vulnerable to critical RCE Meta launches new anti-scam tools for WhatsApp and Messenger FinWise data breach shows why encryption is your last defense PhantomCaptcha ClickFix attack targets Ukraine war relief orgs Store your data with 2TB of FileJump storage in this $69.97 lifetime deal Tutorials Latest Popular How to access the Dark Web using the Tor Browser How to enable Kernel-mode Hardware-enforced Stack Protection in Windows 11 How to use the Windows Registry Editor How to backup and restore the Windows Registry How to start Windows in Safe Mode How to remove a Trojan, Virus, Worm, or other Malware How to show hidden files in Windows 7 How to see hidden files in Windows Virus Removal Guides Latest Most Viewed Ransomware Remove the Theonlinesearch.com Search Redirect Remove the Smartwebfinder.com Search Redirect How to remove the PBlock+ adware browser extension Remove the Toksearches.xyz Search Redirect Remove Security Tool and SecurityTool (Uninstall Guide) How to Remove WinFixer / Virtumonde / Msevents / Trojan.vundo How to remove Antivirus 2009 (Uninstall Instructions) How to remove Google Redirects or the TDSS, TDL3, or Alureon rootkit using TDSSKiller Locky Ransomware Information, Help Guide, and FAQ CryptoLocker Ransomware Information Guide and FAQ CryptorBit and HowDecrypt Information Guide and FAQ CryptoDefense and How_Decrypt Ransomware Information Guide and FAQ Downloads Latest Most Downloaded Qualys BrowserCheck STOPDecrypter AuroraDecrypter FilesLockerDecrypter AdwCleaner ComboFix RKill Junkware Removal Tool Deals Categories eLearning IT Certification Courses Gear + Gadgets Security VPNs Popular Best VPNs How to change IP address Access the dark web safely Best VPN for YouTube Forums More Startup Database Uninstall Database Glossary Chat on Discord Send us a Tip! Welcome Guide Home News Security Cursor, Windsurf IDEs riddled with 94 n-day Chromium vulnerabilities Cursor, Windsurf IDEs riddled with 94+ n-day Chromium vulnerabilities By Bill Toulas October 21, 2025 03:00 PM 1 The latest releases of Cursor and Windsurf integrated development environments are vulnerable to more than 94 known and patched security issues in the Chromium browser and the V8 JavaScript engine. An estimated 1.8 million developers, the userbase for the two IDEs, are exposed to the risks. Ox Security researchers explain that both development environments are built on old software that includes outdated versions of the open-source Chromium browser and Google's V8 engine. They say that Cursor and Windsurf rely on old versions of VS Code that include old releases of the Electron framework for building cross-platform apps using web technologies (HTML, CSS, JavaScript). \"Since Electron embeds Chromium and V8, this means the IDEs rely on outdated Chromium and V8 engines, exposing them to vulnerabilities that have already been patched in newer versions,\" the researchers say in a report shared with BleepingComputer. The researchers say that Cursor and Windsurf are vulnerable to at least 94 vulnerabilities present in the Chromium builds they use. Despite the security issue being disclosed responsibly since October 12, the risks are still present as Cursor considered the report \"out of scope\" and Windsurf did not respond. Inheriting n-days from older Electron apps Source: Ox Security Chrome risks on the IDE Cursor and Windsurf are AI-powered code editors forked from Visual Studio Code. They integrate large-language models (LLMs) to help developers write software more easily and quickly. They are distributed as Electron apps, meaning an application runtime that packages a specific Chromium build for rendering web content, and includes the browser's V8 JavaScript engine in the binary. The specific Electron release pins a Chromium + V8 version, and if the vendor doesn't upgrade it, flaws fixed in every subsequent release become exploitable risks in the IDE. Ox Security demonstrated that it is possible to exploit the Maglev JIT integer overflow described in CVE-2025-7656 through a deeplink, which executes Cursor and injects a prompt instructing its browser to visit a remote URL hosting an exploit payload. The remote page serves JavaScript that triggers CVE-2025-7656 exploitation, causing denial of service by crashing the renderer. Nir Zadok and Moshe Siman Tov Bustan of Ox Security demonstrated their findings by targeting Cursor IDE with an exploit for CVE-2025-7656, an integer overflow vulnerability in Google Chrome's V8 engine fixed on July 15. The proof-of-concept exploit caused Cursor to enter a denial-of-service condition (crash), as shown in the video below: However, Ox Security notes that arbitrary code execution is also possible in real-world attacks. An adversary would have multiple options to trigger the vulnerability. The researchers say that an attacker could use a malicious extension to trigger the exploit or inject the exploit code into documentation and tutorials. Hackers could also rely on classic phishing attacks or leverage poisoned repositories by planting malicious code in README files that are previewed in the IDE. Overview of the attack Source: Ox Security Ox Security notes that the exploit does not work on the latest VS Code, which is regularly updated and addresses all known bugs. Upon receiving the proof-of-concept exploit, Cursor dismissed the report by saying that self-inflicted DoS is out of scope. But the researchers noted that this stance ignores the more severe exploitation potential of the flaw, including memory-corruption primitives, or even the broader set of unpatched CVEs in the Electron apps used. \"Since their last Chromium update on 2025-03-21 for version 0.47.9 since Chromium 132.0.6834.210 was out, at least 94 known CVEs have been published. We've weaponized just one. The attack surface is massive,\" explains Ox Security. BleepingComputer has contacted both Cursor and Windsurf asking for a comment on Ox Security's report, but we have not heard back by publication time. Picus Blue Report 2025 is Here: 2X increase in password cracking 46% of environments had passwords cracked, nearly doubling from 25% last year. Get the Picus Blue Report 2025 now for a comprehensive look at more findings on prevention, detection, and data exfiltration trends. Get the Blue Report 2025 Related Articles: RondoDox botnet targets 56 n-day flaws in worldwide attacks Opera wants you to pay $19.90 per month for its new AI browser Google patches sixth Chrome zero-day exploited in attacks this year Cursor AI editor lets repos &ldquo;autorun&rdquo; malicious code on devices Experimental PromptLock ransomware uses AI to encrypt, steal data AI Chromium Coding Google Chrome IDE LLM N-day Vulnerability Bill Toulas Bill Toulas is a tech writer and infosec news reporter with over a decade of experience working on various online publications, covering open-source, Linux, malware, data breach incidents, and hacks. Previous Article Next Article Comments fromFirefoxToVivaldi - 20 hours ago I wonder what's the status for Steam's built-in browser. I have not seen them updating if after chromium updates, but maybe it happens purely in the background. Post a Comment Community Rules You need to login in order to post a comment Not a member yet? Register Now You may also like: Popular Stories AWS outage crashes Amazon, Prime Video, Fortnite, Perplexity and more CISA: High-severity Windows SMB flaw now exploited in attacks TikTok videos continue to push infostealers in ClickFix attacks Sponsor Posts Abuse our assessment. Get an Identity Security Assessment. Worst case? We find something. Ready to own your network security? Take control today – learn more. Insider threats happen. Keep your data safe with D.AMO encryption Get certified, get connected, and get 10% off your VMUG Advantage membership with code ADVNOW. Turn exposure data into evidence. Validate, prioritize, and fix what matters with Picus. Follow us: Main Sections News VPN Buyer Guides SysAdmin Software Guides Downloads Virus Removal Guides Tutorials Startup Database Uninstall Database Glossary Community Forums Forum Rules Chat Useful Resources Welcome Guide Sitemap Company About BleepingComputer Contact Us Send us a Tip! Advertising Write for BleepingComputer Social & Feeds Changelog Terms of Use - Privacy Policy - Ethics Statement - Affiliate Disclosure Copyright @ 2003 - 2025 Bleeping Computer &reg; LLC - All Rights Reserved Login Username Password Remember Me Sign in anonymously Sign in with Twitter Not a member yet? Register Now Reporter Help us understand the problem. What is going on with this comment? Spam Abusive or Harmful Inappropriate content Strong language Other Read our posting guidelinese to learn what content is prohibited. Submitting... SUBMIT",
+          "contentLength": 9083
+        }
+      }
+    ],
+    "Generate Blog Post": [
+      {
+        "json": {
+          "output": "TITLE: **AI-Powered IDEs: The Hidden Cost of Speed? How 94+ Chromium Vulnerabilities Threaten Developer Security**\n\nThe rapid adoption of AI-driven development tools is transforming how we code, promising unprecedented productivity. However, a critical security assessment by Ox Security reveals a dangerous underbelly: popular AI-powered IDEs Cursor and Windsurf are built on outdated, vulnerable foundations, exposing an estimated 1.8 million developers to significant risk.\n\n**Key Findings from the Report:**  \n1.  **94+ N-Day Vulnerabilities:** Both Cursor and Windsurf IDEs are forked from older versions of VS Code, embedding outdated builds of Chromium (the open-source core of Chrome) and Google’s V8 JavaScript engine. This legacy code includes at least **94 known, unpatched vulnerabilities** (n-days) fixed in current Chromium releases but unaddressed in these IDEs.  \n2.  **Electron Framework Culprit:** The IDEs use an obsolete version of the Electron framework, which locks in specific, dated Chromium/V8 builds. Vendors failing to update Electron inherit all subsequent patched flaws.  \n3.  **Exploit Demonstration:** Researchers weaponized **CVE-2025-7656** (a high-severity V8 integer overflow patched months ago) to crash the IDE via a malicious deep link. Evidence suggests *arbitrary code execution* (RCE) is feasible in real attacks.  \n4.  **Attack Vectors Abound:** Malicious extensions, compromised documentation/tutorials, poisoned repo README files (previewed in the IDE), or phishing links could trigger exploits.  \n5.  **Vendor Inaction:** Cursor dismissed the risk as \"out of scope\" (focusing only on self-DoS), while Windsurf didn’t respond. Contrastly, current VS Code remains secure via regular updates.  \n\n**Implications for AI and Cybersecurity:**  \nThis isn't just about patching bugs—it’s about the security posture of tools enabling tomorrow’s software:  \n- **AI Acceleration vs. Security Debt:** AI features (like integrated LLMs) draw developers, but vendors may prioritize speed *over* dependency hygiene, turning IDEs into attack surfaces.  \n- **Supply Chain Risks Amplified:** Vulnerable dev tools compromise the integrity and security of *all code produced* within them, enabling software supply chain attacks.  \n- **N-Day Threats ≠ Low Risk:** \"Patched\" flaws become critical when embedded in essential tools with stagnant dependencies. Attackers actively target such outdated components.  \n\n**Practical Concerns and Applications:**  \n1.  **Expanded Attack Surface:** Developers' IDEs now handle network requests, render web content, and parse untrusted data (e.g., repo docs). Compromising the IDE grants attackers persistent access to dev environments and potentially corporate networks.  \n2.  **AI as an Attack Vector?** AI assistants accepting prompts via deep links (as exploited by Ox) could inadvertently execute malicious instructions.  \n3.  **The Vendor Responsibility Gap:** Cursor’s dismissal highlights a dangerous mentality—downplaying \"self-inflicted\" risks ignores weaponization potential.  \n\n**Actionable Insights for Security Professionals:**  \n1.  **Inventory & Assess:** Identify if Cursor, Windsurf, or other Electron-based tools are in your dev ecosystem. Scrutinize dependency trees for outdated Chromium/V8.  \n2.  **Pressure Vendors:** Demand transparency on dependency update cycles. Switch to tools (like VS Code) with proven patch discipline if vendors are unresponsive.  \n3.  **Segment Developer Environments:** Treat developer workstations as high-risk assets. Enforce network segmentation, strict execution policies, and monitor IDE processes.  \n4.  **Scan for Malicious Artifacts:** Implement controls to detect poisoned docs, extensions, or scripts targeting the IDE's renderer process.  \n5.  **Raise Developer Awareness:** Train teams on risks of interacting with untrusted content/repos *within* the IDE, and safe extension practices.  \n\n### The Bottom Line\nWhile AI-powered tools enhance developer velocity, they must not become the weakest link in your security chain. The Cursor/Windsurf incident underscores a critical lesson: **Innovation cannot come at the cost of foundational security hygiene.** Security teams must extend scrutiny beyond production code to the *tools building it*—because when developers’ arsenals are compromised, the battlefield is already lost.  \n\nProactively managing third-party dependencies in development tools isn't optional; it's the bedrock of modern DevSecOps. As AI integrates deeper into coding, ensuring these platforms themselves are fortified is the next frontier in cybersecurity defense.  \n\n**SOURCE:** [Cursor, Windsurf IDEs riddled with 94+ n-day Chromium vulnerabilities](https://www.bleepingcomputer.com/news/security/cursor-windsurf-ides-riddled-with-94-plus-n-day-chromium-vulnerabilities/)"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "RSS Feed Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Feed Read": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit Articles": {
+      "main": [
+        [
+          {
+            "node": "Fetch Article Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Blog Post": {
+      "main": [
+        [
+          {
+            "node": "Format Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Output": {
+      "main": [
+        [
+          {
+            "node": "Save to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save to Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Results": {
+      "main": [
+        [
+          {
+            "node": "Check Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Success": {
+      "main": [
+        [
+          {
+            "node": "Send Success Email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Failure Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Blog Post",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        []
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Limit Articles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Article Content": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Generate Blog Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "95c0c92a-05b1-4746-8ed6-247bc8684eeb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d8fd79d96fdbff7c4bd2f7717b7c6f6a09c36312caeca402126f64bfcd5159b4"
+  },
+  "id": "P5oJkVdvIewGSMWk",
+  "tags": [
+    {
+      "name": "Blog Automation",
+      "id": "AgQplTMiBI3y18yu",
+      "createdAt": "2025-10-22T12:41:02.876Z",
+      "updatedAt": "2025-10-22T12:41:02.876Z"
+    },
+    {
+      "name": "AI",
+      "id": "eJ6zvQPWBqj6pAwz",
+      "createdAt": "2025-10-22T12:41:02.857Z",
+      "updatedAt": "2025-10-22T12:41:02.857Z"
+    },
+    {
+      "name": "Cybersecurity",
+      "id": "ni2pKHNPwETLOJUA",
+      "createdAt": "2025-10-22T12:41:02.861Z",
+      "updatedAt": "2025-10-22T12:41:02.861Z"
+    }
+  ]
+}
