@@ -2,7 +2,7 @@
 
 **An automated workflow that generates blog posts from RSS feeds using AI**
 
-## ðŸ†• **NEW: Intelligent AI-Powered Classification!**
+## **NEW: Intelligent AI-Powered Classification!**
 No more keyword matching! The workflow now uses AI to understand if articles are truly about both AI and cybersecurity. It knows that "Cursor IDE vulnerabilities" is relevant but "SharePoint attacks" is not. See [AI_CLASSIFIER_UPGRADE.md](AI_CLASSIFIER_UPGRADE.md) for details.
 
 ---
