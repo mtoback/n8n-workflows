@@ -7,22 +7,22 @@ No more keyword matching! The workflow now uses AI to understand if articles are
 
 ---
 
-## ðŸ“¦ What's Included
+##  What's Included
 
 This package contains everything you need to set up an automated AI-powered blog generator:
 
 ### 1. **ai_blog_generator_workflow.json**
 The complete n8n workflow file ready to import. Includes:
-- âœ… Schedule trigger (daily at 9 AM)
-- âœ… RSS feed reader (Bleeping Computer)
-- âœ… **ðŸ†• AI-powered article classifier** (intelligent filtering)
-- âœ… HTTP article fetcher
-- âœ… HTML text extraction
-- âœ… AI blog post generation
-- âœ… Google Sheets output
-- âœ… Gmail notifications (success/failure)
-- âœ… Comprehensive error handling
-- âœ… 13 documentation sticky notes
+-  Schedule trigger (daily at 9 AM)
+-  RSS feed reader (Bleeping Computer)
+-  AI-powered article classifier** (intelligent filtering)
+- HTTP article fetcher
+- HTML text extraction
+- AI blog post generation
+- Google Sheets output
+- Gmail notifications (success/failure)
+- Comprehensive error handling
+- documentation sticky notes
 
 ### 3. **AI_CLASSIFIER_UPGRADE.md**
 Detailed explanation of the new AI-powered classification system:
@@ -44,7 +44,7 @@ A detailed step-by-step guide covering:
 
 ---
 
-## ðŸš€ Quick Start (5 Minutes)
+## Quick Start (5 Minutes)
 
 1. **Import** the workflow into n8n
 2. **Configure** three credentials:
@@ -55,25 +55,25 @@ A detailed step-by-step guide covering:
 4. **Test** the workflow
 5. **Activate** and let it run!
 
-ðŸ“– **Read SETUP_GUIDE.md for detailed instructions**
+– **Read SETUP_GUIDE.md for detailed instructions**
 
 ---
 
-## âœ¨ Key Features
+## Key Features
 
-- ðŸ¤– **AI-Powered**: Uses GPT-4, Claude, or other LLMs to generate professional blog posts
-- ðŸ§  **Intelligent Filtering**: AI classifier understands context (not just keywords!)
-- ðŸ“° **RSS Integration**: Monitors cybersecurity news feeds automatically
-- ðŸŽ¯ **Smart Classification**: Knows the difference between SharePoint attacks and Cursor IDE vulnerabilities
-- ðŸ’¾ **Google Sheets**: Stores all generated content in an organized spreadsheet
-- ðŸ“§ **Gmail Alerts**: Notifies you of successes, failures, and when no articles are found
-- ðŸ”„ **Error Recovery**: Automatic retries and graceful failure handling
-- ðŸ“Š **Well-Documented**: 13 sticky notes explain every part of the workflow
-- ðŸ’° **Cost-Effective**: ~$0.20 per run, ~$6/month
+-  **AI-Powered**: Uses GPT-4, Claude, or other LLMs to generate professional blog posts
+-  **Intelligent Filtering**: AI classifier understands context (not just keywords!)
+-  **RSS Integration**: Monitors cybersecurity news feeds automatically
+-  **Smart Classification**: Knows the difference between SharePoint attacks and Cursor IDE vulnerabilities
+-  **Google Sheets**: Stores all generated content in an organized spreadsheet
+-  **Gmail Alerts**: Notifies you of successes, failures, and when no articles are found
+-  **Error Recovery**: Automatic retries and graceful failure handling
+-  **Well-Documented**: 13 sticky notes explain every part of the workflow
+-  **Cost-Effective**: ~$0.20 per run, ~$6/month
 
 ---
 
-## ðŸ“‹ Requirements
+## Requirements
 
 - **n8n instance** (cloud or self-hosted)
 - **AI API key** (OpenAI, Anthropic, Google AI, etc.)
@@ -82,11 +82,11 @@ A detailed step-by-step guide covering:
 
 ---
 
-## ðŸŽ¯ What It Does
+## What It Does
 
 1. **Every day at 9 AM**, the workflow wakes up
 2. **Fetches** the latest articles from Bleeping Computer RSS feed
-3. **ðŸ†• AI Classifier analyzes** each article to determine if it's truly about AI + cybersecurity
+3. ** AI Classifier analyzes** each article to determine if it's truly about AI + cybersecurity
 4. **Limits** to 3 relevant articles (to control costs)
 5. **Fetches** the full article content from each URL
 6. **Extracts** clean text from the HTML
@@ -99,46 +99,44 @@ A detailed step-by-step guide covering:
 
 ---
 
-## ðŸ’¡ Perfect For
+##  Perfect For
 
-- ðŸ” Security bloggers who need content ideas
-- ðŸ“ Content creators covering AI security
-- ðŸ¢ Companies needing regular security updates
-- ðŸ“° Newsletter writers tracking AI threats
-- ðŸŽ“ Educators teaching cybersecurity topics
-- ðŸ”¬ Researchers monitoring AI security trends
+-  Security bloggers who need content ideas
+-  Content creators covering AI security
+-  Companies needing regular security updates
+-  Newsletter writers tracking AI threats
+-  Educators teaching cybersecurity topics
+-  Researchers monitoring AI security trends
 
 ---
 
-## ðŸ”§ Customization
+## Customization
 
 The workflow is fully customizable:
 
-- âœï¸ Change the RSS feed (16 alternatives provided)
-- â° Adjust the schedule (hourly, weekly, etc.)
-- ðŸ” Modify filter keywords
-- ðŸ“ˆ Increase/decrease article limit
-- ðŸ¤– Customize AI prompt and tone
-- ðŸ“Š Output to WordPress, Notion, or other platforms
-- ðŸ“± Send to Slack instead of email
+-  Change the RSS feed (16 alternatives provided)
+-  Adjust the schedule (hourly, weekly, etc.)
+-  Modify filter keywords
+-  Increase/decrease article limit
+-  Customize AI prompt and tone
+-  Output to WordPress, Notion, or other platforms
+-  Send to Slack instead of email
 
 ---
 
-## ðŸ“Š Architecture Overview
+## Architecture Overview
 
 ```
-Daily Schedule â†’ RSS Feed â†’ Filter Keywords â†’ Limit to 3
-    â†“
-Fetch Full Articles â†’ Extract Text â†’ AI Generation
-    â†“
-Format Output â†’ Google Sheets â†’ Gmail Notification
+Daily Schedule RSS Feed Filter Keywords Limit to 3
+Fetch Full Articles Extract Text AI Generation
+Format Output Google Sheets Gmail Notification
 ```
 
 **Error handling at every step ensures you're always notified!**
 
 ---
 
-## ðŸ’° Estimated Costs
+##  Estimated Costs
 
 | Component | Cost |
 |-----------|------|
@@ -154,7 +152,7 @@ Format Output â†’ Google Sheets â†’ Gmail Notification
 
 ---
 
-## ðŸ“– Documentation
+##  Documentation
 
 The workflow includes **13 sticky notes** that explain:
 
@@ -176,7 +174,7 @@ The workflow includes **13 sticky notes** that explain:
 
 ---
 
-## ðŸ†˜ Need Help?
+##Need Help?
 
 1. **Read SETUP_GUIDE.md** - Covers 99% of questions
 2. **Check the sticky notes** - In-workflow documentation
@@ -185,7 +183,7 @@ The workflow includes **13 sticky notes** that explain:
 
 ---
 
-## âœ… Next Steps
+## Next Steps
 
 1. **Import** `ai_blog_generator_workflow.json` into n8n
 2. **Read** `SETUP_GUIDE.md` from top to bottom
@@ -195,14 +193,14 @@ The workflow includes **13 sticky notes** that explain:
 
 ---
 
-## ðŸŽ‰ You're Ready!
+## You're Ready!
 
 This is a **production-ready workflow** with:
-- âœ… Professional error handling
-- âœ… Comprehensive documentation
-- âœ… Cost optimization
-- âœ… Flexible customization
-- âœ… Real-world tested patterns
+- Professional error handling
+- Comprehensive documentation
+- Cost optimization
+- Flexible customization
+- Real-world tested patterns
 
 **Import, configure, and you'll have AI-generated blog posts by tomorrow morning!**
 
