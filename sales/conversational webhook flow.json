@@ -1,0 +1,138 @@
+{
+  "name": "Conversational Flow - Single Webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chat",
+        "responseMode": "lastNode",
+        "responseData": "firstEntryJson",
+        "options": {}
+      },
+      "id": "webhook-chat",
+      "name": "Webhook Chat",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [250, 400],
+      "webhookId": "chat"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "start",
+              "leftValue": "={{ $json.body.stage }}",
+              "rightValue": "start",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "name",
+              "leftValue": "={{ $json.body.stage }}",
+              "rightValue": "name",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "path",
+              "leftValue": "={{ $json.body.stage }}",
+              "rightValue": "path",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "switch-stage",
+      "name": "Switch Stage",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [450, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generate a session ID\nconst sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;\nconst webhookUrl = $input.item.json.body?.webhookUrl || '';\n\n// Return the name question\nreturn [{\n  json: {\n    text: \"What is your name?\",\n    input: {\n      type: \"text\",\n      placeholder: \"Enter your name\"\n    },\n    nextUrl: `${webhookUrl}/chat`,\n    sessionId: sessionId,\n    stage: \"name\"\n  }\n}];"
+      },
+      "id": "handle-start",
+      "name": "Handle Start",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the name and session info\nconst userName = $input.item.json.body?.response || 'there';\nconst sessionId = $input.item.json.body?.sessionId || 'unknown';\nconst webhookUrl = $input.item.json.body?.webhookUrl || '';\n\n// Return the path question\nreturn [{\n  json: {\n    text: `Nice to meet you, ${userName}! Do you want to take path 1 or path 2?`,\n    input: {\n      type: \"radio\",\n      options: [\n        {label: \"Path 1\", value: \"path 1\"},\n        {label: \"Path 2\", value: \"path 2\"}\n      ]\n    },\n    nextUrl: `${webhookUrl}/chat`,\n    sessionId: sessionId,\n    userName: userName,\n    stage: \"path\"\n  }\n}];"
+      },
+      "id": "handle-name",
+      "name": "Handle Name",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [650, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get all the conversation data\nconst pathChoice = $input.item.json.body?.response || 'your chosen path';\nconst userName = $input.item.json.body?.userName || 'there';\nconst sessionId = $input.item.json.body?.sessionId || 'unknown';\n\n// Return the final message\nreturn [{\n  json: {\n    text: `Thank you ${userName}! We will try ${pathChoice}.`,\n    input: null,\n    nextUrl: \"finish\",\n    sessionId: sessionId,\n    finalData: {\n      userName: userName,\n      pathChoice: pathChoice,\n      sessionId: sessionId\n    }\n  }\n}];"
+      },
+      "id": "handle-path",
+      "name": "Handle Path",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [650, 500]
+    }
+  ],
+  "connections": {
+    "Webhook Chat": {
+      "main": [
+        [
+          {
+            "node": "Switch Stage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch Stage": {
+      "main": [
+        [
+          {
+            "node": "Handle Start",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Handle Name",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Handle Path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
