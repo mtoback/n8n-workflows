@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .chat-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .chat-display {
+            background: #f7f9fc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            min-height: 120px;
+            display: none;
+        }
+
+        .chat-display.active {
+            display: block;
+        }
+
+        .chat-text {
+            color: #2d3748;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #4a5568;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .radio-option:hover {
+            border-color: #667eea;
+            background: #f7fafc;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .radio-option label {
+            margin: 0;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .dropdown-group, .multiselect-group {
+            margin-bottom: 20px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        select[multiple] {
+            min-height: 120px;
+        }
+
+        select[multiple] option {
+            padding: 8px;
+            margin: 2px 0;
+        }
+
+        select[multiple] option:checked {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .validation-error {
+            color: #c53030;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .validation-error.show {
+            display: block;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        }
+
+        .start-button:hover {
+            box-shadow: 0 10px 20px rgba(72, 187, 120, 0.4);
+        }
+
+        .loading {
+            text-align: center;
+            color: #718096;
+            padding: 20px;
+        }
+
+        .error {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .config-section {
+            background: #edf2f7;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .config-section label {
+            color: #2d3748;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .config-section input {
+            margin-bottom: 0;
+        }
+
+        .config-section small {
+            display: block;
+            color: #718096;
+            margin-top: 6px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <h1>📧 Contact Us</h1>
+        <p style="text-align: center; color: #4a5568; margin-bottom: 25px; font-size: 16px; line-height: 1.5;">Let's design a workflow that makes your business run smoother</p>
+        
+        <div id="startSection">
+            <button class="start-button" onclick="startChat()">Start the Conversation</button>
+        </div>
+
+        <div id="chatDisplay" class="chat-display">
+            <div id="chatText" class="chat-text"></div>
+            <div id="inputContainer"></div>
+            <button id="sendButton" onclick="sendResponse()" style="display: none;">Send</button>
+            <button id="okButton" onclick="resetChat()" style="display: none; background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); margin-top: 10px;">OK</button>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            Loading...
+        </div>
+
+        <div id="error" class="error" style="display: none;"></div>
+        
+        <div id="resetSection" style="display: none; margin-top: 20px;">
+            <button onclick="resetChat()" style="background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);">Reset Chat</button>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURATION: Change this to your n8n webhook URL
+        const WEBHOOK_BASE_URL = 'https://n8n.srv1039449.hstgr.cloud/webhook';
+        
+        let currentNextUrl = null;
+        let baseUrl = WEBHOOK_BASE_URL;
+        let sessionId = null;
+        let currentStage = 'start';
+        let conversationData = {};
+
+        async function startChat() {
+            // Construct the chat URL
+            const chatUrl = `${baseUrl}/chat-test`;
+
+            showLoading(true);
+            hideError();
+
+            try {
+                const response = await fetch(chatUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        stage: 'start',
+                        webhookUrl: baseUrl
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status}. Response: ${errorText.substring(0, 200)}`);
+                }
+
+                const responseText = await response.text();
+                console.log('Raw response:', responseText);
+                
+                if (!responseText || responseText.trim() === '') {
+                    throw new Error('Empty response from webhook. Make sure the workflow is active and returning JSON.');
+                }
+                
+                let data;
+                try {
+                    data = JSON.parse(responseText);
+                } catch (parseError) {
+                    throw new Error(`Invalid JSON response: ${responseText.substring(0, 200)}`);
+                }
+                
+                // Store session info
+                sessionId = data.sessionId;
+                currentStage = data.stage;
+                
+                displayResponse(data);
+                
+                document.getElementById('startSection').style.display = 'none';
+                document.getElementById('resetSection').style.display = 'block';
+            } catch (error) {
+                showError(`Failed to start chat: ${error.message}`);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function resetChat() {
+            // Reset the UI
+            document.getElementById('chatDisplay').classList.remove('active');
+            document.getElementById('startSection').style.display = 'block';
+            document.getElementById('resetSection').style.display = 'none';
+            document.getElementById('sendButton').style.display = 'none';
+            document.getElementById('okButton').style.display = 'none';
+            document.getElementById('inputContainer').innerHTML = '';
+            hideError();
+            
+            // Reset session data
+            sessionId = null;
+            currentStage = 'start';
+            conversationData = {};
+            currentNextUrl = null;
+        }
+
+        async function sendResponse() {
+            const inputContainer = document.getElementById('inputContainer');
+            let responseValue = null;
+
+            // Get the response value based on input type
+            const textInput = inputContainer.querySelector('input[type="text"]');
+            const radioInputs = inputContainer.querySelectorAll('input[type="radio"]');
+            const dropdown = inputContainer.querySelector('select:not([multiple])');
+            const multiselect = inputContainer.querySelector('select[multiple]');
+
+            if (textInput) {
+                responseValue = textInput.value.trim();
+                if (!responseValue) {
+                    showError('Please enter a value');
+                    return;
+                }
+                
+                // Validate regex if provided
+                if (textInput.dataset.regex) {
+                    const regex = new RegExp(textInput.dataset.regex);
+                    const errorDiv = document.getElementById('validation-error');
+                    
+                    if (!regex.test(responseValue)) {
+                        if (errorDiv) {
+                            errorDiv.textContent = textInput.dataset.errorMessage;
+                            errorDiv.classList.add('show');
+                        }
+                        return;
+                    } else {
+                        if (errorDiv) {
+                            errorDiv.classList.remove('show');
+                        }
+                    }
+                }
+                
+            } else if (radioInputs.length > 0) {
+                const selectedRadio = inputContainer.querySelector('input[type="radio"]:checked');
+                if (!selectedRadio) {
+                    showError('Please select an option');
+                    return;
+                }
+                responseValue = selectedRadio.value;
+                
+            } else if (dropdown) {
+                responseValue = dropdown.value;
+                if (!responseValue) {
+                    showError('Please select an option');
+                    return;
+                }
+                
+            } else if (multiselect) {
+                const selectedOptions = Array.from(multiselect.selectedOptions).map(opt => opt.value);
+                if (selectedOptions.length === 0) {
+                    showError('Please select at least one option');
+                    return;
+                }
+                responseValue = selectedOptions; // Array of values
+            }
+
+            if (!currentNextUrl || currentNextUrl === 'finish') {
+                return;
+            }
+
+            console.log('Sending to URL:', currentNextUrl);
+            console.log('Sending response:', responseValue);
+            console.log('Session ID:', sessionId);
+            console.log('Current stage:', currentStage);
+            console.log('Conversation data:', conversationData);
+
+            showLoading(true);
+            hideError();
+
+            try {
+                // Build the request payload with session and stage info
+                const payload = {
+                    stage: currentStage,
+                    response: responseValue,
+                    sessionId: sessionId,
+                    webhookUrl: baseUrl,
+                    ...conversationData  // Include any previous conversation data
+                };
+
+                const response = await fetch(currentNextUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status}. Response: ${errorText.substring(0, 200)}`);
+                }
+
+                const responseText = await response.text();
+                console.log('Raw response:', responseText);
+                
+                if (!responseText || responseText.trim() === '') {
+                    throw new Error('Empty response from webhook. Make sure the workflow is active.');
+                }
+                
+                let data;
+                try {
+                    data = JSON.parse(responseText);
+                } catch (parseError) {
+                    throw new Error(`Invalid JSON response: ${responseText.substring(0, 200)}`);
+                }
+                
+                // Update session tracking
+                if (data.sessionId) sessionId = data.sessionId;
+                if (data.stage) currentStage = data.stage;
+                if (data.userName) conversationData.userName = data.userName;
+                
+                displayResponse(data);
+            } catch (error) {
+                console.error('Full error:', error);
+                showError(`Failed to send response: ${error.message}`);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function displayResponse(data) {
+            const chatDisplay = document.getElementById('chatDisplay');
+            const chatText = document.getElementById('chatText');
+            const inputContainer = document.getElementById('inputContainer');
+            const sendButton = document.getElementById('sendButton');
+            const okButton = document.getElementById('okButton');
+            const resetSection = document.getElementById('resetSection');
+
+            chatDisplay.classList.add('active');
+            chatText.textContent = data.text;
+            currentNextUrl = data.nextUrl;
+
+            // Clear previous input
+            inputContainer.innerHTML = '';
+
+            if (data.nextUrl === 'finish' || !data.input) {
+                // Conversation is finished
+                sendButton.style.display = 'none';
+                okButton.style.display = 'block';
+                resetSection.style.display = 'none';
+                return;
+            }
+
+            // Show reset button during conversation
+            resetSection.style.display = 'block';
+            okButton.style.display = 'none';
+
+            // Render the appropriate input type
+            if (data.input.type === 'text') {
+                const inputGroup = document.createElement('div');
+                inputGroup.className = 'input-group';
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.placeholder = data.input.placeholder || '';
+                input.id = 'text-input';
+                
+                // Store regex and error message if provided
+                if (data.input.regex) {
+                    input.dataset.regex = data.input.regex;
+                    input.dataset.errorMessage = data.input.errorMessage || 'Invalid input format';
+                }
+                
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        sendResponse();
+                    }
+                });
+
+                inputGroup.appendChild(input);
+                
+                // Add validation error div
+                if (data.input.regex) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'validation-error';
+                    errorDiv.id = 'validation-error';
+                    inputGroup.appendChild(errorDiv);
+                }
+                
+                inputContainer.appendChild(inputGroup);
+                
+                setTimeout(() => input.focus(), 100);
+                
+            } else if (data.input.type === 'radio') {
+                const radioGroup = document.createElement('div');
+                radioGroup.className = 'radio-group';
+
+                data.input.options.forEach((option, index) => {
+                    const radioOption = document.createElement('div');
+                    radioOption.className = 'radio-option';
+
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = 'chatRadio';
+                    radio.value = option.value;
+                    radio.id = `radio-${index}`;
+
+                    const label = document.createElement('label');
+                    label.htmlFor = `radio-${index}`;
+                    label.textContent = option.label;
+
+                    radioOption.appendChild(radio);
+                    radioOption.appendChild(label);
+                    
+                    radioOption.addEventListener('click', () => {
+                        radio.checked = true;
+                    });
+
+                    radioGroup.appendChild(radioOption);
+                });
+
+                inputContainer.appendChild(radioGroup);
+                
+            } else if (data.input.type === 'dropdown') {
+                const dropdownGroup = document.createElement('div');
+                dropdownGroup.className = 'dropdown-group';
+
+                const select = document.createElement('select');
+                select.id = 'dropdown-select';
+                
+                // Add placeholder option
+                const placeholderOption = document.createElement('option');
+                placeholderOption.value = '';
+                placeholderOption.textContent = data.input.placeholder || 'Select an option...';
+                placeholderOption.disabled = true;
+                placeholderOption.selected = true;
+                select.appendChild(placeholderOption);
+
+                data.input.options.forEach((option) => {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = option.value;
+                    optionElement.textContent = option.label;
+                    select.appendChild(optionElement);
+                });
+
+                dropdownGroup.appendChild(select);
+                inputContainer.appendChild(dropdownGroup);
+                
+            } else if (data.input.type === 'multiselect') {
+                const multiselectGroup = document.createElement('div');
+                multiselectGroup.className = 'multiselect-group';
+
+                const label = document.createElement('label');
+                label.textContent = data.input.label || 'Select one or more options:';
+                multiselectGroup.appendChild(label);
+
+                const select = document.createElement('select');
+                select.id = 'multiselect-select';
+                select.multiple = true;
+
+                data.input.options.forEach((option) => {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = option.value;
+                    optionElement.textContent = option.label;
+                    select.appendChild(optionElement);
+                });
+
+                multiselectGroup.appendChild(select);
+                inputContainer.appendChild(multiselectGroup);
+            }
+
+            sendButton.style.display = 'block';
+        }
+
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+            document.getElementById('sendButton').disabled = show;
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function hideError() {
+            document.getElementById('error').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
