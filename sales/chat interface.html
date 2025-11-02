@@ -150,6 +150,154 @@
             color: white;
         }
 
+        .calendar-group {
+            margin-bottom: 20px;
+        }
+
+        .calendar-container {
+            background: #f7f9fc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .calendar-header button {
+            padding: 8px 12px;
+            font-size: 14px;
+            width: auto;
+        }
+
+        .calendar-month {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 12px;
+            padding: 8px 0;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .calendar-day:hover:not(.disabled):not(.empty) {
+            border-color: #667eea;
+            background: #f7fafc;
+        }
+
+        .calendar-day.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .calendar-day.disabled {
+            color: #cbd5e0;
+            cursor: not-allowed;
+            background: #f7fafc;
+        }
+
+        .calendar-day.empty {
+            border: none;
+            cursor: default;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .time-slot {
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .time-slot:hover {
+            border-color: #667eea;
+            background: #f7fafc;
+        }
+
+        .time-slot.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .slider-group {
+            margin-bottom: 20px;
+        }
+
+        .slider-container {
+            margin-top: 10px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            border: none;
+        }
+
+        .slider-value {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #667eea;
+        }
+
         .validation-error {
             color: #c53030;
             font-size: 14px;
@@ -348,10 +496,12 @@
             let responseValue = null;
 
             // Get the response value based on input type
-            const textInput = inputContainer.querySelector('input[type="text"]');
+            const textInput = inputContainer.querySelector('input[type="text"], input[type="email"], input[type="tel"]');
             const radioInputs = inputContainer.querySelectorAll('input[type="radio"]');
             const dropdown = inputContainer.querySelector('select:not([multiple])');
             const multiselect = inputContainer.querySelector('select[multiple]');
+            const slider = inputContainer.querySelector('input[type="range"]');
+            const calendar = inputContainer.querySelector('#calendar-container');
 
             if (textInput) {
                 responseValue = textInput.value.trim();
@@ -395,11 +545,52 @@
                 
             } else if (multiselect) {
                 const selectedOptions = Array.from(multiselect.selectedOptions).map(opt => opt.value);
-                if (selectedOptions.length === 0) {
-                    showError('Please select at least one option');
+                const minSelections = parseInt(multiselect.dataset.minSelections) || 0;
+                const maxSelections = parseInt(multiselect.dataset.maxSelections) || Infinity;
+                const errorDiv = document.getElementById('multiselect-error');
+                
+                if (selectedOptions.length < minSelections) {
+                    if (errorDiv) {
+                        errorDiv.textContent = `Please select at least ${minSelections} option${minSelections > 1 ? 's' : ''}`;
+                        errorDiv.classList.add('show');
+                    }
+                    return;
+                } else if (selectedOptions.length > maxSelections) {
+                    if (errorDiv) {
+                        errorDiv.textContent = `Please select no more than ${maxSelections} option${maxSelections > 1 ? 's' : ''}`;
+                        errorDiv.classList.add('show');
+                    }
+                    return;
+                } else {
+                    if (errorDiv) {
+                        errorDiv.classList.remove('show');
+                    }
+                }
+                
+                responseValue = selectedOptions; // Array of values
+                
+            } else if (slider) {
+                responseValue = slider.value;
+                
+            } else if (calendar) {
+                const selectedDate = calendar.dataset.selectedDate;
+                const selectedTime = calendar.dataset.selectedTime;
+                
+                if (!selectedDate) {
+                    showError('Please select a date');
                     return;
                 }
-                responseValue = selectedOptions; // Array of values
+                
+                const timeSlots = JSON.parse(calendar.dataset.timeSlots || '[]');
+                if (timeSlots.length > 0 && !selectedTime) {
+                    showError('Please select a time slot');
+                    return;
+                }
+                
+                responseValue = {
+                    date: selectedDate,
+                    time: selectedTime || null
+                };
             }
 
             if (!currentNextUrl || currentNextUrl === 'finish') {
@@ -499,7 +690,7 @@
                 inputGroup.className = 'input-group';
 
                 const input = document.createElement('input');
-                input.type = 'text';
+                input.type = data.input.inputType || 'text'; // Support email, tel, etc.
                 input.placeholder = data.input.placeholder || '';
                 input.id = 'text-input';
                 
@@ -595,6 +786,10 @@
                 const select = document.createElement('select');
                 select.id = 'multiselect-select';
                 select.multiple = true;
+                
+                // Store min/max selections
+                if (data.input.minSelections) select.dataset.minSelections = data.input.minSelections;
+                if (data.input.maxSelections) select.dataset.maxSelections = data.input.maxSelections;
 
                 data.input.options.forEach((option) => {
                     const optionElement = document.createElement('option');
@@ -604,10 +799,194 @@
                 });
 
                 multiselectGroup.appendChild(select);
+                
+                // Add validation error div for multiselect
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'validation-error';
+                errorDiv.id = 'multiselect-error';
+                multiselectGroup.appendChild(errorDiv);
+                
                 inputContainer.appendChild(multiselectGroup);
+                
+            } else if (data.input.type === 'slider') {
+                const sliderGroup = document.createElement('div');
+                sliderGroup.className = 'slider-group';
+
+                const label = document.createElement('label');
+                label.textContent = data.input.label || 'Select a value:';
+                sliderGroup.appendChild(label);
+
+                const sliderContainer = document.createElement('div');
+                sliderContainer.className = 'slider-container';
+
+                const slider = document.createElement('input');
+                slider.type = 'range';
+                slider.id = 'slider-input';
+                slider.min = data.input.min || 0;
+                slider.max = data.input.max || 100;
+                slider.step = data.input.step || 1;
+                slider.value = data.input.min || 0;
+
+                const valueDisplay = document.createElement('div');
+                valueDisplay.className = 'slider-value';
+                const unit = data.input.unit || '';
+                valueDisplay.textContent = `${slider.value} ${unit}`;
+
+                slider.addEventListener('input', (e) => {
+                    valueDisplay.textContent = `${e.target.value} ${unit}`;
+                });
+
+                sliderContainer.appendChild(slider);
+                sliderContainer.appendChild(valueDisplay);
+                sliderGroup.appendChild(sliderContainer);
+                inputContainer.appendChild(sliderGroup);
+                
+            } else if (data.input.type === 'calendar') {
+                const calendarGroup = document.createElement('div');
+                calendarGroup.className = 'calendar-group';
+
+                const label = document.createElement('label');
+                label.textContent = data.input.label || 'Select a date:';
+                calendarGroup.appendChild(label);
+
+                const calendarContainer = document.createElement('div');
+                calendarContainer.className = 'calendar-container';
+                calendarContainer.id = 'calendar-container';
+
+                // Store calendar data
+                calendarContainer.dataset.minDate = data.input.minDate || '';
+                calendarContainer.dataset.maxDate = data.input.maxDate || '';
+                calendarContainer.dataset.disabledDays = JSON.stringify(data.input.disabledDays || []);
+                calendarContainer.dataset.timeSlots = JSON.stringify(data.input.timeSlots || []);
+
+                // Render calendar
+                renderCalendar(calendarContainer, new Date());
+
+                calendarGroup.appendChild(calendarContainer);
+                inputContainer.appendChild(calendarGroup);
             }
 
             sendButton.style.display = 'block';
+        }
+
+        function renderCalendar(container, currentDate) {
+            const minDate = container.dataset.minDate ? new Date(container.dataset.minDate) : null;
+            const maxDate = container.dataset.maxDate ? new Date(container.dataset.maxDate) : null;
+            const disabledDays = JSON.parse(container.dataset.disabledDays || '[]');
+            const timeSlots = JSON.parse(container.dataset.timeSlots || '[]');
+
+            container.innerHTML = '';
+
+            // Header
+            const header = document.createElement('div');
+            header.className = 'calendar-header';
+
+            const prevBtn = document.createElement('button');
+            prevBtn.textContent = '←';
+            prevBtn.onclick = () => {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                renderCalendar(container, currentDate);
+            };
+
+            const monthDisplay = document.createElement('div');
+            monthDisplay.className = 'calendar-month';
+            monthDisplay.textContent = currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+            const nextBtn = document.createElement('button');
+            nextBtn.textContent = '→';
+            nextBtn.onclick = () => {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                renderCalendar(container, currentDate);
+            };
+
+            header.appendChild(prevBtn);
+            header.appendChild(monthDisplay);
+            header.appendChild(nextBtn);
+            container.appendChild(header);
+
+            // Calendar grid
+            const grid = document.createElement('div');
+            grid.className = 'calendar-grid';
+
+            // Day headers
+            ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'calendar-day-header';
+                dayHeader.textContent = day;
+                grid.appendChild(dayHeader);
+            });
+
+            // Get first day of month and number of days
+            const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+            const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDayOfWeek = firstDay.getDay();
+
+            // Empty cells before first day
+            for (let i = 0; i < startingDayOfWeek; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day empty';
+                grid.appendChild(emptyDay);
+            }
+
+            // Days of month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = day;
+
+                // Check if day is disabled
+                const dayName = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][date.getDay()];
+                const isDisabledDay = disabledDays.includes(dayName);
+                const isBeforeMin = minDate && date < minDate;
+                const isAfterMax = maxDate && date > maxDate;
+
+                if (isDisabledDay || isBeforeMin || isAfterMax) {
+                    dayElement.classList.add('disabled');
+                } else {
+                    dayElement.onclick = () => selectDate(container, date, timeSlots);
+                }
+
+                grid.appendChild(dayElement);
+            }
+
+            container.appendChild(grid);
+        }
+
+        function selectDate(container, date, timeSlots) {
+            // Remove previous selection
+            container.querySelectorAll('.calendar-day.selected').forEach(el => el.classList.remove('selected'));
+            
+            // Mark selected day
+            event.target.classList.add('selected');
+            
+            // Store selected date
+            container.dataset.selectedDate = date.toISOString().split('T')[0];
+
+            // Remove previous time slots
+            const existingSlots = container.querySelector('.time-slots');
+            if (existingSlots) existingSlots.remove();
+
+            // Add time slots if provided
+            if (timeSlots.length > 0) {
+                const timeSlotsContainer = document.createElement('div');
+                timeSlotsContainer.className = 'time-slots';
+
+                timeSlots.forEach(time => {
+                    const slot = document.createElement('div');
+                    slot.className = 'time-slot';
+                    slot.textContent = time;
+                    slot.onclick = () => {
+                        container.querySelectorAll('.time-slot.selected').forEach(el => el.classList.remove('selected'));
+                        slot.classList.add('selected');
+                        container.dataset.selectedTime = time;
+                    };
+                    timeSlotsContainer.appendChild(slot);
+                });
+
+                container.appendChild(timeSlotsContainer);
+            }
         }
 
         function showLoading(show) {
